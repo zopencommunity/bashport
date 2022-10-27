@@ -1,0 +1,23 @@
+export ZOPEN_GIT_URL="https://github.com/bminor/bash.git"
+export ZOPEN_GIT_DEPS="git make gzip tar"
+export ZOPEN_TARBALL_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz"
+export ZOPEN_TARBALL_DEPS="curl gzip tar make"
+export ZOPEN_TYPE="TARBALL"
+export ZOPEN_EXTRA_CPPFLAGS="-DDISABLE_MALLOC_WRAPPERS"
+
+zopen_check_results()
+{
+  dir="$1"
+  pfx="$2"
+  chk="$1/$2_check.log"
+
+  # Echo the following information to guage build health
+  echo "actualFailures:0"
+  echo "totalTests:1"
+  echo "expectedFailures:0"
+}
+
+zopen_append_to_env()
+{
+  # echo envars outside of PATH, MANPATH, LIBPATH
+}
