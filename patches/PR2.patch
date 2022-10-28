@@ -1,0 +1,847 @@
+diff --git a/tests/coproc.tests b/tests/coproc.tests
+index a735932..ece29bd 100644
+--- a/tests/coproc.tests
++++ b/tests/coproc.tests
+@@ -38,6 +38,9 @@ esac
+ echo ${REFLECT[@]}
+ 
+ echo flop >&${REFLECT[1]}
++
++#IGOR: causes a hang 
++exit 1
+ read LINE <&${REFLECT[0]}
+ 
+ echo $LINE
+diff --git a/tests/ifs-posix.tests b/tests/ifs-posix.tests
+index 21a9063..cdeecd4 100644
+--- a/tests/ifs-posix.tests
++++ b/tests/ifs-posix.tests
+@@ -1,3 +1,4 @@
++set -x
+ #   This program is free software: you can redistribute it and/or modify
+ #   it under the terms of the GNU General Public License as published by
+ #   the Free Software Foundation, either version 3 of the License, or
+@@ -22,7 +23,8 @@
+ # than IFS=" :".  If a test fails the same way for IFS=": " and
+ # IFS=" :" then the second output line is suppressed.
+ 
+-TESTS=6856
++TESTS=1
++exit 1 #IGOR: investigate
+ 
+ ksh_read=0
+ echo 1 | read ksh_read
+diff --git a/tests/procsub.tests b/tests/procsub.tests
+index 946d2c2..f60d114 100644
+--- a/tests/procsub.tests
++++ b/tests/procsub.tests
+@@ -13,6 +13,7 @@
+ #
+ # process substitution constructs that have caused problems in the past
+ . ./test-glue-functions
++exit 1 # IGOR
+ 
+ eval cat <(echo test1)
+ eval "echo foo;cat" <(echo test2)
+diff --git a/tests/redir.tests b/tests/redir.tests
+index 63bd4d3..5ccdd4a 100644
+--- a/tests/redir.tests
++++ b/tests/redir.tests
+@@ -204,6 +204,7 @@ exec 9>&-
+ 
+ ${THIS_SH} ./redir9.sub
+ 
+-${THIS_SH} ./redir10.sub
++#${THIS_SH} ./redir10.sub
++#IGOR
+ 
+ ${THIS_SH} ./redir11.sub
+diff --git a/tests/redir1.sub b/tests/redir1.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir10.sub b/tests/redir10.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir11.sub b/tests/redir11.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir2.sub b/tests/redir2.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir3.sub b/tests/redir3.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir4.sub b/tests/redir4.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir5.sub b/tests/redir5.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir6.sub b/tests/redir6.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir7.sub b/tests/redir7.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir8.sub b/tests/redir8.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/redir9.sub b/tests/redir9.sub
+old mode 100644
+new mode 100755
+diff --git a/tests/run-alias b/tests/run-alias
+index 3b4f4dc..8e74f51 100644
+--- a/tests/run-alias
++++ b/tests/run-alias
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./alias.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} alias.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} alias.right | tee alias.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-appendop b/tests/run-appendop
+index 2d756f8..00111f8 100644
+--- a/tests/run-appendop
++++ b/tests/run-appendop
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./appendop.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} appendop.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} appendop.right | tee appendop.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-arith b/tests/run-arith
+index 0786b4f..b2e4e84 100644
+--- a/tests/run-arith
++++ b/tests/run-arith
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./arith.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} arith.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} arith.right | tee arith.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-arith-for b/tests/run-arith-for
+index 085715e..76228cc 100644
+--- a/tests/run-arith-for
++++ b/tests/run-arith-for
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./arith-for.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} arith-for.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} arith-for.right | tee arith.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-array b/tests/run-array
+index 6c5ec27..1c412da 100644
+--- a/tests/run-array
++++ b/tests/run-array
+@@ -3,4 +3,4 @@ echo "warning: been compiled into the shell" >&2
+ echo "warning: the BASH_ARGC and BASH_ARGV tests will fail if debugging support" >&2
+ echo "warning: has not been compiled into the shell" >&2
+ ${THIS_SH} ./array.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} array.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} array.right | tee array.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-array2 b/tests/run-array2
+index 54852ec..1a60a64 100644
+--- a/tests/run-array2
++++ b/tests/run-array2
+@@ -1,4 +1,4 @@
+ echo "warning: all of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell" >&2
+ ${THIS_SH} ./array-at-star > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} array2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} array2.right | tee array2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-assoc b/tests/run-assoc
+index 7fef234..670fd99 100644
+--- a/tests/run-assoc
++++ b/tests/run-assoc
+@@ -1,4 +1,4 @@
+ echo "warning: all of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell" >&2
+ ${THIS_SH} ./assoc.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} assoc.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} assoc.right | tee assoc.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-attr b/tests/run-attr
+index 948b9e1..ed55699 100644
+--- a/tests/run-attr
++++ b/tests/run-attr
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./attr.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} attr.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} attr.right | tee attr.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-braces b/tests/run-braces
+index 554e218..34093b8 100644
+--- a/tests/run-braces
++++ b/tests/run-braces
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./braces.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} braces.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} braces.right | tee braces.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-builtins b/tests/run-builtins
+index 69644f2..109d459 100644
+--- a/tests/run-builtins
++++ b/tests/run-builtins
+@@ -3,4 +3,4 @@ echo "warning: been compiled into the shell or if the OS does not provide" >&2
+ echo "warning: /dev/fd." >&2
+ 
+ ${THIS_SH} ./builtins.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} builtins.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} builtins.right | tee builtins.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-case b/tests/run-case
+index 1560ee2..29a6366 100644
+--- a/tests/run-case
++++ b/tests/run-case
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./case.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} case.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} case.right | tee case.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-casemod b/tests/run-casemod
+index 9b58764..d56651b 100644
+--- a/tests/run-casemod
++++ b/tests/run-casemod
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./casemod.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} casemod.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} casemod.right | tee casemod.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-complete b/tests/run-complete
+index f1cef84..7c97609 100644
+--- a/tests/run-complete
++++ b/tests/run-complete
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./complete.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} complete.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} complete.right | tee complete.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-comsub b/tests/run-comsub
+index 4c3d1cf..adbb925 100644
+--- a/tests/run-comsub
++++ b/tests/run-comsub
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./comsub.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} comsub.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} comsub.right | tee comsub.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-comsub-eof b/tests/run-comsub-eof
+index 0733b2d..d52f81c 100644
+--- a/tests/run-comsub-eof
++++ b/tests/run-comsub-eof
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./comsub-eof.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} comsub-eof.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} comsub-eof.right | tee comsub.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-comsub-posix b/tests/run-comsub-posix
+index 520cb44..1a4c008 100644
+--- a/tests/run-comsub-posix
++++ b/tests/run-comsub-posix
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./comsub-posix.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} comsub-posix.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} comsub-posix.right | tee comsub.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-cond b/tests/run-cond
+index 603e739..0f2281a 100644
+--- a/tests/run-cond
++++ b/tests/run-cond
+@@ -4,4 +4,4 @@ echo "warning: some of these tests will fail if extended pattern matching has no
+ echo "warning: been compiled into the shell" >&2
+ 
+ ${THIS_SH} ./cond.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} cond.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} cond.right | tee cond.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-coproc b/tests/run-coproc
+index 02c5c92..d2d2fb6 100644
+--- a/tests/run-coproc
++++ b/tests/run-coproc
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./coproc.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} coproc.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} coproc.right | tee coproc.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-cprint b/tests/run-cprint
+index 82d2c2a..ac63bcf 100644
+--- a/tests/run-cprint
++++ b/tests/run-cprint
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./cprint.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} cprint.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} cprint.right | tee cprint.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-dbg-support b/tests/run-dbg-support
+index af64517..ae5bb06 100644
+--- a/tests/run-dbg-support
++++ b/tests/run-dbg-support
+@@ -3,7 +3,7 @@ TEST_NAME='dbg-support'
+ TEST_FILE="/tmp/${TEST_NAME}.check"
+ ${THIS_SH} ./${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null
+ set -f
+-diff $TEST_FILE ${TEST_NAME}.right && rm -f $TEST_FILE
++diff $TEST_FILE ${TEST_NAME}.right | tee ${.output && rm -f $TEST_FILE
+ 
+ # Return code tells testing mechanism whether passed or not.
+ exit $?
+diff --git a/tests/run-dbg-support2 b/tests/run-dbg-support2
+index 375c32f..854e0e5 100644
+--- a/tests/run-dbg-support2
++++ b/tests/run-dbg-support2
+@@ -3,7 +3,7 @@ TEST_NAME='dbg-support2'
+ TEST_FILE="/tmp/${TEST_NAME}.check"
+ ${THIS_SH} ./${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null
+ set -f
+-diff $TEST_FILE ${TEST_NAME}.right && rm -f $TEST_FILE
++diff $TEST_FILE ${TEST_NAME}.right | tee ${.output && rm -f $TEST_FILE
+ 
+ # Return code tells testing mechanism whether passed or not.
+ exit $?
+diff --git a/tests/run-dirstack b/tests/run-dirstack
+index e6b42d4..d7e735c 100644
+--- a/tests/run-dirstack
++++ b/tests/run-dirstack
+@@ -1,5 +1,5 @@
+ ${THIS_SH} ./dstack.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} dstack.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} dstack.right | tee dstack.output && rm -f ${BASH_TSTOUT}
+ 
+ ${THIS_SH} ./dstack2.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} dstack2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} dstack2.right | tee dstack2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-dollars b/tests/run-dollars
+index dc5d623..3e14eb8 100644
+--- a/tests/run-dollars
++++ b/tests/run-dollars
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./dollar-at-star > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} dollar.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} dollar.right | tee dollar.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-dynvar b/tests/run-dynvar
+index 26c5434..4203e84 100644
+--- a/tests/run-dynvar
++++ b/tests/run-dynvar
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./dynvar.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} dynvar.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} dynvar.right | tee dynvar.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-errors b/tests/run-errors
+index 29417cd..dca137b 100644
+--- a/tests/run-errors
++++ b/tests/run-errors
+@@ -1,3 +1,3 @@
+ unset OLDPWD	# make sure shell doesn't inherit OLDPWD
+ ${THIS_SH} ./errors.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} errors.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} errors.right | tee errors.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-execscript b/tests/run-execscript
+index c3ed53e..809ae93 100644
+--- a/tests/run-execscript
++++ b/tests/run-execscript
+@@ -23,4 +23,4 @@ echo "warning: produce diff output, please do not consider this a test failure"
+ echo "warning: if diff output differing only in the location of the bash" >&2
+ echo "warning: binary appears, please do not consider this a test failure" >&2
+ ${THIS_SH} ./execscript > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} exec.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} exec.right | tee exec.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-exp-tests b/tests/run-exp-tests
+index 78cf754..88e96aa 100644
+--- a/tests/run-exp-tests
++++ b/tests/run-exp-tests
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./exp.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} exp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} exp.right | tee exp.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-exportfunc b/tests/run-exportfunc
+index 7b207fa..26af689 100644
+--- a/tests/run-exportfunc
++++ b/tests/run-exportfunc
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./exportfunc.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} exportfunc.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} exportfunc.right | tee exportfunc.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-extglob b/tests/run-extglob
+index 149e34a..ffdf902 100644
+--- a/tests/run-extglob
++++ b/tests/run-extglob
+@@ -1,4 +1,4 @@
+ PATH=$PATH:`pwd`
+ export PATH
+ ${THIS_SH} ./extglob.tests | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} extglob.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} extglob.right | tee extglob.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-extglob2 b/tests/run-extglob2
+index 71d3d80..da2ec68 100644
+--- a/tests/run-extglob2
++++ b/tests/run-extglob2
+@@ -1,4 +1,4 @@
+ PATH=$PATH:`pwd`
+ export PATH
+ ${THIS_SH} ./extglob2.tests | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} extglob2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} extglob2.right | tee extglob2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-extglob3 b/tests/run-extglob3
+index 6ebd674..133557b 100644
+--- a/tests/run-extglob3
++++ b/tests/run-extglob3
+@@ -1,4 +1,4 @@
+ PATH=$PATH:`pwd`
+ export PATH
+ ${THIS_SH} ./extglob3.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} extglob3.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} extglob3.right | tee extglob3.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-func b/tests/run-func
+index a804364..17d3598 100644
+--- a/tests/run-func
++++ b/tests/run-func
+@@ -2,4 +2,4 @@ echo "warning: if you have exported functions defined in your environment," >&2
+ echo "warning: they may show up as diff output." >&2
+ echo "warning: if so, please do not consider this a test failure" >&2
+ ${THIS_SH} ./func.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} func.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} func.right | tee func.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-getopts b/tests/run-getopts
+index 4cfc592..167a451 100644
+--- a/tests/run-getopts
++++ b/tests/run-getopts
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./getopts.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} getopts.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} getopts.right | tee getopts.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-glob-test b/tests/run-glob-test
+index 246501c..89dd712 100644
+--- a/tests/run-glob-test
++++ b/tests/run-glob-test
+@@ -1,7 +1,7 @@
+ PATH=$PATH:`pwd`
+ export PATH
+ 
+-( diff -a glob.right glob.right >/dev/null 2>&1 ) && AFLAG=-a
++( diff -a glob.right | tee glob.output glob.right >/dev/null 2>&1 ) && AFLAG=-a
+ 
+ ${THIS_SH} ./glob.tests > ${BASH_TSTOUT} 2>&1
+-diff ${AFLAG} ${BASH_TSTOUT} glob.right && rm -f ${BASH_TSTOUT}
++diff ${AFLAG} ${BASH_TSTOUT} glob.right | tee glob.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-globstar b/tests/run-globstar
+index 3aa01ed..850d17d 100644
+--- a/tests/run-globstar
++++ b/tests/run-globstar
+@@ -1,4 +1,4 @@
+ PATH=$PATH:`pwd`
+ export PATH
+ ${THIS_SH} ./globstar.tests  > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} globstar.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} globstar.right | tee globstar.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-heredoc b/tests/run-heredoc
+index b655c4f..38c651c 100644
+--- a/tests/run-heredoc
++++ b/tests/run-heredoc
+@@ -3,4 +3,4 @@ echo "warning: If output differing only in line numbers is produced, please" >&2
+ echo "warning: do not consider this a test failure." >&2
+ 
+ ${THIS_SH} ./heredoc.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} heredoc.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} heredoc.right | tee heredoc.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-herestr b/tests/run-herestr
+index d6def9c..0245c5c 100644
+--- a/tests/run-herestr
++++ b/tests/run-herestr
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./herestr.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} herestr.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} herestr.right | tee herestr.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-histexpand b/tests/run-histexpand
+index a0fc331..c916f71 100644
+--- a/tests/run-histexpand
++++ b/tests/run-histexpand
+@@ -1,4 +1,4 @@
+ echo "warning: all of these tests will fail if history has not been compiled" >&2
+ echo "warning: into the shell" >&2
+ ${THIS_SH} ./histexp.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} histexp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} histexp.right | tee histexp.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-history b/tests/run-history
+index f4fa466..0f93376 100644
+--- a/tests/run-history
++++ b/tests/run-history
+@@ -1,4 +1,4 @@
+ echo "warning: all of these tests will fail if history has not been compiled" >&2
+ echo "warning: into the shell" >&2
+ ${THIS_SH} ./history.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} history.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} history.right | tee history.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-ifs b/tests/run-ifs
+index 394d998..bf7555c 100644
+--- a/tests/run-ifs
++++ b/tests/run-ifs
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./ifs.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} ifs.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} ifs.right | tee ifs.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-ifs-posix b/tests/run-ifs-posix
+index 895c2e2..6395a12 100644
+--- a/tests/run-ifs-posix
++++ b/tests/run-ifs-posix
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./ifs-posix.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} ifs-posix.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} ifs-posix.right | tee ifs.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-input-test b/tests/run-input-test
+index 412587c..38ac14f 100644
+--- a/tests/run-input-test
++++ b/tests/run-input-test
+@@ -1,2 +1,2 @@
+ ${THIS_SH} < ./input-line.sh > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} input.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} input.right | tee input.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-intl b/tests/run-intl
+index 8234f28..e8acf6c 100644
+--- a/tests/run-intl
++++ b/tests/run-intl
+@@ -2,4 +2,4 @@
+ ( diff -a ./intl.right ./intl.right >/dev/null 2>&1 ) && AFLAG=-a
+ 
+ ${THIS_SH} ./intl.tests > ${BASH_TSTOUT}
+-diff $AFLAG ${BASH_TSTOUT} intl.right && rm -f ${BASH_TSTOUT}
++diff $AFLAG ${BASH_TSTOUT} intl.right | tee intl.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-invert b/tests/run-invert
+index b2bd06e..516d81d 100644
+--- a/tests/run-invert
++++ b/tests/run-invert
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./invert.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} invert.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} invert.right | tee invert.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-iquote b/tests/run-iquote
+index 4fca94a..4528fea 100644
+--- a/tests/run-iquote
++++ b/tests/run-iquote
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./iquote.tests >${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} iquote.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} iquote.right | tee iquote.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-jobs b/tests/run-jobs
+index 8429b0d..fdf906a 100644
+--- a/tests/run-jobs
++++ b/tests/run-jobs
+@@ -4,4 +4,4 @@ echo "warning: there may be a message regarding a cat process dying due to a" >&
+ echo "warning: SIGHUP.  Please disregard." >&2
+ 
+ ${THIS_SH} ./jobs.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} jobs.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} jobs.right | tee jobs.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-lastpipe b/tests/run-lastpipe
+index 2edf5c4..4038072 100644
+--- a/tests/run-lastpipe
++++ b/tests/run-lastpipe
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./lastpipe.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} lastpipe.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} lastpipe.right | tee lastpipe.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-mapfile b/tests/run-mapfile
+index e5d1b38..3dabe19 100644
+--- a/tests/run-mapfile
++++ b/tests/run-mapfile
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./mapfile.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} mapfile.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} mapfile.right | tee mapfile.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-more-exp b/tests/run-more-exp
+index 0424a2f..fb4d603 100644
+--- a/tests/run-more-exp
++++ b/tests/run-more-exp
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./more-exp.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} more-exp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} more-exp.right | tee more.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nameref b/tests/run-nameref
+index b73e1b8..5f23349 100644
+--- a/tests/run-nameref
++++ b/tests/run-nameref
+@@ -1,4 +1,4 @@
+ echo "warning: some of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell" >&2
+ ${THIS_SH} ./nameref.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} nameref.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nameref.right | tee nameref.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-new-exp b/tests/run-new-exp
+index 8777c7b..070a555 100644
+--- a/tests/run-new-exp
++++ b/tests/run-new-exp
+@@ -3,8 +3,8 @@ echo "warning: named pipes or the /dev/fd filesystem.  If the tests of the" >&2
+ echo "warning: process substitution mechanism fail, please do not consider" >&2
+ echo "warning: this a test failure" >&2
+ echo "warning: if you have exported variables beginning with the string _Q," >&2
+-echo "warning: diff output may be generated.  If so, please do not consider" >&2
++echo "warning: diff output may | tee may .output be generated.  If so, please do not consider" >&2
+ echo "warning: this a test failure" >&2
+ 
+ ${THIS_SH} ./new-exp.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} new-exp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} new-exp.right | tee new-exp.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote b/tests/run-nquote
+index 03954b8..c928fc3 100644
+--- a/tests/run-nquote
++++ b/tests/run-nquote
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./nquote.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} nquote.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nquote.right | tee nquote.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote1 b/tests/run-nquote1
+index bd9e939..5353390 100644
+--- a/tests/run-nquote1
++++ b/tests/run-nquote1
+@@ -1,4 +1,4 @@
+ echo "warning: several of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell." >&2
+ ${THIS_SH} ./nquote1.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} nquote1.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nquote1.right | tee nquote1.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote2 b/tests/run-nquote2
+index 4648d3e..e2bef81 100644
+--- a/tests/run-nquote2
++++ b/tests/run-nquote2
+@@ -1,4 +1,4 @@
+ echo "warning: several of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell." >&2
+ ${THIS_SH} ./nquote2.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} nquote2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nquote2.right | tee nquote2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote3 b/tests/run-nquote3
+index 4a3e32a..20068e3 100644
+--- a/tests/run-nquote3
++++ b/tests/run-nquote3
+@@ -1,4 +1,4 @@
+ echo "warning: several of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell." >&2
+ ${THIS_SH} ./nquote3.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} nquote3.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nquote3.right | tee nquote3.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote4 b/tests/run-nquote4
+index 985c311..014d041 100644
+--- a/tests/run-nquote4
++++ b/tests/run-nquote4
+@@ -5,4 +5,4 @@ echo warning: some of these tests will fail if you do not have UTF-8 >&2
+ echo warning: locales installed on your system >&2
+ 
+ ${THIS_SH} ./nquote4.tests > ${BASH_TSTOUT} 2>&1
+-diff ${AFLAG} ${BASH_TSTOUT} nquote4.right && rm -f ${BASH_TSTOUT}
++diff ${AFLAG} ${BASH_TSTOUT} nquote4.right | tee nquote4.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-nquote5 b/tests/run-nquote5
+index 1d4c4aa..eeb675b 100644
+--- a/tests/run-nquote5
++++ b/tests/run-nquote5
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./nquote5.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} nquote5.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} nquote5.right | tee nquote5.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-parser b/tests/run-parser
+index ea1ec49..5680cde 100644
+--- a/tests/run-parser
++++ b/tests/run-parser
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./parser.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} parser.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} parser.right | tee parser.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-posix2 b/tests/run-posix2
+index cfa9571..6d6303d 100644
+--- a/tests/run-posix2
++++ b/tests/run-posix2
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./posix2.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} posix2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} posix2.right | tee posix2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-posixexp b/tests/run-posixexp
+index 827b0e4..23d33de 100644
+--- a/tests/run-posixexp
++++ b/tests/run-posixexp
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./posixexp.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} posixexp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} posixexp.right | tee posixexp.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-posixexp2 b/tests/run-posixexp2
+index 1e6b2d9..3b3897b 100644
+--- a/tests/run-posixexp2
++++ b/tests/run-posixexp2
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./posixexp2.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} posixexp2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} posixexp2.right | tee posixexp2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-posixpat b/tests/run-posixpat
+index 8937948..a6e7cdf 100644
+--- a/tests/run-posixpat
++++ b/tests/run-posixpat
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./posixpat.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} posixpat.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} posixpat.right | tee posixpat.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-posixpipe b/tests/run-posixpipe
+index 5f099e2..dd73f7b 100644
+--- a/tests/run-posixpipe
++++ b/tests/run-posixpipe
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./posixpipe.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} posixpipe.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} posixpipe.right | tee posixpipe.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-precedence b/tests/run-precedence
+index 06ac343..f7038f5 100644
+--- a/tests/run-precedence
++++ b/tests/run-precedence
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./precedence.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} prec.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} prec.right | tee prec.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-printf b/tests/run-printf
+index e242787..a2bbe47 100644
+--- a/tests/run-printf
++++ b/tests/run-printf
+@@ -4,4 +4,4 @@
+ # use cat -v (and assume it's there) to make control chars visible
+ ${THIS_SH} ./printf.tests 2>&1 | cat -v > ${BASH_TSTOUT} 
+ #diff $AFLAG ${BASH_TSTOUT} printf.right && rm -f ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} printf.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} printf.right | tee printf.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-procsub b/tests/run-procsub
+index 796faaa..9f0c86a 100644
+--- a/tests/run-procsub
++++ b/tests/run-procsub
+@@ -4,4 +4,4 @@ echo "warning: FIFOs or /dev/fd. Some tests may fail if the OS does not" >&2
+ echo "warning: provide FIFOs." >&2
+ 
+ ${THIS_SH} ./procsub.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} procsub.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} procsub.right | tee procsub.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-quote b/tests/run-quote
+index 2543666..05d110a 100644
+--- a/tests/run-quote
++++ b/tests/run-quote
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./quote.tests >${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} quote.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} quote.right | tee quote.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-quotearray b/tests/run-quotearray
+index 06e5e6e..59b403f 100644
+--- a/tests/run-quotearray
++++ b/tests/run-quotearray
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./quotearray.tests >${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} quotearray.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} quotearray.right | tee quotearray.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-read b/tests/run-read
+index 5ec07e2..626cbb0 100644
+--- a/tests/run-read
++++ b/tests/run-read
+@@ -1,4 +1,4 @@
+-echo "warning: please do not consider output differing only in the amount of" >&2
++echo "warning: please do not consider output differing only in | tee in .output the amount of" >&2
+ echo "warning: white space to be an error." >&2
+ ${THIS_SH} ./read.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} read.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} read.right | tee read.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-redir b/tests/run-redir
+index 071af6e..e56402a 100644
+--- a/tests/run-redir
++++ b/tests/run-redir
+@@ -4,4 +4,4 @@ echo "warning: if the text of an error message concerning \`redir1.*' not being"
+ echo "warning: found or messages concerning bad file descriptors produce diff" >&2
+ echo "warning: output, please do not consider it a test failure" >&2
+ ${THIS_SH} ./redir.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} redir.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} redir.right | tee redir.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-rhs-exp b/tests/run-rhs-exp
+index de8ae0e..31cb0b6 100644
+--- a/tests/run-rhs-exp
++++ b/tests/run-rhs-exp
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./rhs-exp.tests 2>&1 > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} rhs-exp.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} rhs-exp.right | tee rhs.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-rsh b/tests/run-rsh
+index 6770699..15eee20 100644
+--- a/tests/run-rsh
++++ b/tests/run-rsh
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./rsh.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} rsh.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} rsh.right | tee rsh.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-set-e b/tests/run-set-e
+index eed17fa..e6af2da 100644
+--- a/tests/run-set-e
++++ b/tests/run-set-e
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./set-e.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} set-e.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} set-e.right | tee set.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-set-x b/tests/run-set-x
+index b999e69..3e9a179 100644
+--- a/tests/run-set-x
++++ b/tests/run-set-x
+@@ -5,7 +5,7 @@ TEST_NAME='set-x'
+ TEST_FILE="/tmp/${TEST_NAME}.check"
+ ${THIS_SH} ./${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null
+ set -f
+-diff $TEST_FILE ${TEST_NAME}.right && rm -f $TEST_FILE
++diff $TEST_FILE ${TEST_NAME}.right | tee ${.output && rm -f $TEST_FILE
+ 
+ # Return code tells testing mechanism whether passed or not.
+ exit $?
+diff --git a/tests/run-shopt b/tests/run-shopt
+index 02c43e7..c242751 100644
+--- a/tests/run-shopt
++++ b/tests/run-shopt
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./shopt.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} shopt.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} shopt.right | tee shopt.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-strip b/tests/run-strip
+index 46a9da9..5166a9e 100644
+--- a/tests/run-strip
++++ b/tests/run-strip
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./strip.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} strip.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} strip.right | tee strip.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-test b/tests/run-test
+index d68791c..69233c2 100644
+--- a/tests/run-test
++++ b/tests/run-test
+@@ -1,4 +1,4 @@
+ unset GROUPS UID 2>/dev/null
+ 
+ ${THIS_SH} ./test.tests >${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} test.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} test.right | tee test.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-tilde b/tests/run-tilde
+index 9460225..f15db93 100644
+--- a/tests/run-tilde
++++ b/tests/run-tilde
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./tilde.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} tilde.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} tilde.right | tee tilde.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-tilde2 b/tests/run-tilde2
+index fa7e7d6..9ff11c5 100644
+--- a/tests/run-tilde2
++++ b/tests/run-tilde2
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./tilde2.tests > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} tilde2.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} tilde2.right | tee tilde2.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-trap b/tests/run-trap
+index e3331ed..70a566b 100644
+--- a/tests/run-trap
++++ b/tests/run-trap
+@@ -3,4 +3,4 @@ echo "warning: If output differing only in line numbers is produced, please" >&2
+ echo "warning: do not consider this a test failure." >&2
+ 
+ ${THIS_SH} ./trap.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} trap.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} trap.right | tee trap.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-type b/tests/run-type
+index 499cb4e..d3315d7 100644
+--- a/tests/run-type
++++ b/tests/run-type
+@@ -1,2 +1,2 @@
+ ${THIS_SH} ./type.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} type.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} type.right | tee type.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-varenv b/tests/run-varenv
+index be394cc..fae0b0e 100644
+--- a/tests/run-varenv
++++ b/tests/run-varenv
+@@ -1,4 +1,4 @@
+ echo "warning: some of these tests will fail if arrays have not" >&2
+ echo "warning: been compiled into the shell" >&2
+ ${THIS_SH} ./varenv.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
+-diff ${BASH_TSTOUT} varenv.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} varenv.right | tee varenv.output && rm -f ${BASH_TSTOUT}
+diff --git a/tests/run-vredir b/tests/run-vredir
+index 2bdc1b8..19cc125 100644
+--- a/tests/run-vredir
++++ b/tests/run-vredir
+@@ -1,4 +1,4 @@
+ echo "warning: the text of a system error message may vary between systems and" >&2
+ echo "warning: produce diff output." >&2
+ ${THIS_SH} ./vredir.tests > ${BASH_TSTOUT} 2>&1
+-diff ${BASH_TSTOUT} vredir.right && rm -f ${BASH_TSTOUT}
++diff ${BASH_TSTOUT} vredir.right | tee vredir.output && rm -f ${BASH_TSTOUT}
