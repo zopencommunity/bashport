@@ -1,7 +1,7 @@
 export ZOPEN_GIT_URL="https://github.com/bminor/bash.git"
 export ZOPEN_GIT_DEPS="git make gzip tar"
 export ZOPEN_TARBALL_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz"
-export ZOPEN_TARBALL_DEPS="curl gzip tar make ncurses zoslib"
+export ZOPEN_TARBALL_DEPS="curl gzip tar make zoslib coreutils diffutils ncurses"
 export ZOPEN_TYPE="TARBALL"
 export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DNSIG=42"
 export ZOPEN_EXTRA_CFLAGS="-qnoopt"
