@@ -24,19 +24,6 @@ index 946d2c2..f60d114 100644
  
  eval cat <(echo test1)
  eval "echo foo;cat" <(echo test2)
-diff --git a/tests/redir.tests b/tests/redir.tests
-index 63bd4d3..5ccdd4a 100644
---- a/tests/redir.tests
-+++ b/tests/redir.tests
-@@ -204,6 +204,7 @@ exec 9>&-
- 
- ${THIS_SH} ./redir9.sub
- 
--${THIS_SH} ./redir10.sub
-+#${THIS_SH} ./redir10.sub
-+#IGOR
- 
- ${THIS_SH} ./redir11.sub
 diff --git a/tests/redir1.sub b/tests/redir1.sub
 old mode 100644
 new mode 100755
