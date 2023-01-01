@@ -1,16 +1,8 @@
 diff --git a/tests/coproc.tests b/tests/coproc.tests
-index a735932..1d20060 100644
+index a735932..4cc2e5e 100644
 --- a/tests/coproc.tests
 +++ b/tests/coproc.tests
-@@ -38,6 +38,7 @@ esac
- echo ${REFLECT[@]}
- 
- echo flop >&${REFLECT[1]}
-+
- read LINE <&${REFLECT[0]}
- 
- echo $LINE
-@@ -65,7 +66,7 @@ read <&${COPROC[0]}
+@@ -65,7 +65,7 @@ read <&${COPROC[0]}
  echo $REPLY
  echo ${COPROC[@]}
  
