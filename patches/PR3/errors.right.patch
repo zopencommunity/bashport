@@ -1,0 +1,30 @@
+diff --git a/tests/errors.right b/tests/errors.right
+index 0bd88ef..b93c210 100644
+--- a/tests/errors.right
++++ b/tests/errors.right
+@@ -59,10 +59,10 @@ comsub: -c: line 1: `: $( for z in 1 2 3; do )'
+ comsub: -c: line 1: syntax error near unexpected token `done'
+ comsub: -c: line 1: `: $( for z in 1 2 3; done )'
+ ./errors.tests: line 189: cd: HOME not set
+-./errors.tests: line 190: cd: /tmp/xyz.bash: No such file or directory
++./errors.tests: line 190: cd: /tmp/xyz.bash: EDC5129I No such file or directory.
+ ./errors.tests: line 192: cd: OLDPWD not set
+-./errors.tests: line 193: cd: /bin/sh: Not a directory
+-./errors.tests: line 195: cd: /tmp/cd-notthere: No such file or directory
++./errors.tests: line 193: cd: /bin/sh: EDC5135I Not a directory.
++./errors.tests: line 195: cd: /tmp/cd-notthere: EDC5129I No such file or directory.
+ ./errors.tests: line 198: .: filename argument required
+ .: usage: . filename [arguments]
+ ./errors.tests: line 199: source: filename argument required
+@@ -108,9 +108,9 @@ kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill
+ after f
+ ./errors2.sub: line 3: ${$NO_SUCH_VAR}: bad substitution
+ 1
+-./errors3.sub: line 5: no_such_file: No such file or directory
++./errors3.sub: line 5: no_such_file: EDC5129I No such file or directory.
+ TEST
+-./errors3.sub: line 7: no_such_file: No such file or directory
++./errors3.sub: line 7: no_such_file: EDC5129I No such file or directory.
+ 1
+ 2
+ ./errors4.sub: line 20: var: readonly variable

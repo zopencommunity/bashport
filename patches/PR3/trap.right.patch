@@ -1,0 +1,61 @@
+diff --git a/tests/trap.right b/tests/trap.right
+index 4338ff4..25bd782 100644
+--- a/tests/trap.right
++++ b/tests/trap.right
+@@ -2,18 +2,18 @@ subshell exit
+ trap -- 'echo exiting' EXIT
+ trap -- 'echo aborting' SIGHUP
+ trap -- 'echo aborting' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ [33] debug
+ debug line
+ [35] debug
+ trap -- 'echo exiting' EXIT
+ trap -- 'echo aborting' SIGHUP
+ trap -- 'echo aborting' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo [$LINENO] debug' DEBUG
+ [37] debug
+ func[29] funcdebug
+@@ -22,9 +22,9 @@ funcdebug line
+ trap -- 'echo exiting' EXIT
+ trap -- 'echo aborting' SIGHUP
+ trap -- 'echo aborting' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo ${FUNCNAME:-$0}[$LINENO] funcdebug' DEBUG
+ ./trap.tests[41] funcdebug
+ ./trap.tests[46] debug
+@@ -37,21 +37,21 @@ func2debug line
+ trap -- 'echo exiting' EXIT
+ trap -- 'echo aborting' SIGHUP
+ trap -- 'echo aborting' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ trap -- '' DEBUG
+ trap -- 'echo exiting' EXIT
+ trap -- 'echo aborting' SIGHUP
+ trap -- 'echo aborting' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo exiting' EXIT
+ trap -- '' SIGINT
+-trap -- 'echo aborting' SIGQUIT
+ trap -- 'echo aborting' SIGABRT
+ trap -- 'echo aborting' SIGTERM
++trap -- 'echo aborting' SIGQUIT
+ 0
+ trap -- '' SIGUSR2
+ ERRTRAP

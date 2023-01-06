@@ -1,25 +1,3 @@
-diff --git a/lib/glob/smatch.c b/lib/glob/smatch.c
-index 379c2d2..acb436f 100644
---- a/lib/glob/smatch.c
-+++ b/lib/glob/smatch.c
-@@ -141,7 +141,7 @@ rangecmp (c1, c2, forcecoll)
- #  define rangecmp(c1, c2, f)	((int)(c1) - (int)(c2))
- #endif /* !HAVE_STRCOLL */
- 
--#if defined (HAVE_STRCOLL)
-+#if defined (HAVE_STRCOLL) && !defined(__MVS__)
- /* Returns 1 if chars C and EQUIV collate equally in the current locale. */
- static int
- collequiv (c, equiv)
-@@ -157,7 +157,7 @@ collequiv (c, equiv)
- #endif
-   
- }
--#else
-+#elif !defined(__MVS__)
- #  define collequiv(c, equiv)	((c) == (equiv))
- #endif
- 
 diff --git a/lib/intl/gettextP.h b/lib/intl/gettextP.h
 index 5c137e5..9a9d840 100644
 --- a/lib/intl/gettextP.h

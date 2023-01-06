@@ -1,0 +1,35 @@
+diff --git a/support/signames.c b/support/signames.c
+index 84864fd..3368109 100644
+--- a/support/signames.c
++++ b/support/signames.c
+@@ -432,6 +432,30 @@ initialize_signames ()
+   signal_names[SIGKILLTHR] = "SIGKILLTHR";
+ #endif
+ 
++/* z/OS */
++
++#if defined(SIGABND)
++  signal_names[SIGABND] = "SIGABND";
++#endif
++#if defined(SIGIOERR)
++  signal_names[SIGIOERR] = "SIGIOERR";
++#endif
++#if defined(SIGTHSTOP)
++  signal_names[SIGTHSTOP] = "SIGTHSTOP";
++#endif
++#if defined(SIGTHCONT)
++  signal_names[SIGTHCONT] = "SIGTHCONT";
++#endif
++#if defined(SIGTRACE)
++  signal_names[SIGTRACE] = "SIGTRACE";
++#endif
++#if defined(SIGDCE)
++  signal_names[SIGDCE] = "SIGDCE";
++#endif
++#if defined(SIGDUMP)
++  signal_names[SIGDUMP] = "SIGDUMP";
++#endif
++
+   for (i = 0; i < NSIG; i++)
+     if (signal_names[i] == (char *)NULL)
+       {

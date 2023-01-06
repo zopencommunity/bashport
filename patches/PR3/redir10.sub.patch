@@ -1,0 +1,15 @@
+diff --git a/tests/redir10.sub b/tests/redir10.sub
+old mode 100644
+new mode 100755
+index 7b1d682..6de3c1b
+--- a/tests/redir10.sub
++++ b/tests/redir10.sub
+@@ -15,7 +15,7 @@
+ # Out of file descriptors, because it forgets to close redirection.  Only
+ # happens in a shell function.  Problem through bash-4.2.
+ 
+-ulimit -n 128
++ulimit -n 256
+ 
+ bug()
+ {
