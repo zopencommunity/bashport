@@ -18,5 +18,5 @@ zopen_check_results()
   # Echo the following information to guage build health
   echo "actualFailures:$failures"
   echo "totalTests:$total"
-  echo "expectedFailures:16"
+  echo "expectedFailures:12"
 }
