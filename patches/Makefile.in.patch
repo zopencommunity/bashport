@@ -1,5 +1,5 @@
 diff --git a/Makefile.in b/Makefile.in
-index 0b4df73..7fb3ecc 100644
+index 0b4df73..ca28d7c 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -145,7 +145,7 @@ LOCALE_DEFS = -DLOCALEDIR='"$(localedir)"' -DPACKAGE='"$(PACKAGE)"'
@@ -11,3 +11,27 @@ index 0b4df73..7fb3ecc 100644
  
  STATIC_LD = @STATIC_LD@
  LOCAL_LDFLAGS = @LOCAL_LDFLAGS@
+@@ -654,6 +654,7 @@ buildversion.o: version.h patchlevel.h conftypes.h
+ 
+ # old rules
+ GRAM_H = parser-built
++y.tab.o: CCFLAGS+=-qNOOPT
+ y.tab.o: y.tab.h y.tab.c ${GRAM_H} command.h ${BASHINCDIR}/stdc.h input.h
+ ${GRAM_H}:	y.tab.h
+ 	@-if test -f y.tab.h ; then \
+@@ -1011,6 +1012,7 @@ nojobs.o: $(srcdir)/config-top.h
+ execute_cmd.o: $(srcdir)/config-top.h
+ variables.o: $(srcdir)/config-top.h
+ findcmd.o: $(srcdir)/config-top.h
++subst.o: CCFLAGS+=-qNOOPT
+ subst.o: $(srcdir)/config-top.h
+ builtins/cd.o: $(srcdir)/config-top.h
+ builtins/command.o: $(srcdir)/config-top.h
+@@ -1188,6 +1190,7 @@ sig.o: make_cmd.h subst.h sig.h pathnames.h externs.h execute_cmd.h
+ sig.o: jobs.h siglist.h trap.h $(DEFSRC)/common.h bashline.h bashhist.h
+ sig.o: ${DEFDIR}/builtext.h
+ siglist.o: config.h bashtypes.h siglist.h trap.h 
++stringlib.o: CCFLAGS+=-qNOOPT
+ stringlib.o: bashtypes.h ${BASHINCDIR}/chartypes.h
+ stringlib.o: shell.h syntax.h config.h bashjmp.h ${BASHINCDIR}/posixjmp.h command.h ${BASHINCDIR}/stdc.h error.h
+ stringlib.o: general.h xmalloc.h bashtypes.h variables.h arrayfunc.h conftypes.h array.h hashlib.h
