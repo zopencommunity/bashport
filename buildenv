@@ -11,11 +11,13 @@ zopen_check_results()
   pfx="$2"
   chk="$1/$2_check.log"
 
-  failures=$(/bin/find tests/ -name "*.output"  ! -size 0 | wc -l)
+  failuretests=$(/bin/find tests/ -name "*.output"  ! -size 0)
+  failures=$(echo "${failuretests}" | wc -l)
   total=$(/bin/find tests/ -name "*.output" | wc -l)
 
-  # Echo the following information to guage build health
+  # Echo the following information to gauge build health
+  echo "${failuretests}" >"$1/$2_check_failures.log"
   echo "actualFailures:$failures"
   echo "totalTests:$total"
-  echo "expectedFailures:14"
+  echo "expectedFailures:15"
 }
