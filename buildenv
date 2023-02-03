@@ -21,3 +21,7 @@ zopen_check_results()
   echo "totalTests:$total"
   echo "expectedFailures:15"
 }
+
+zopen_get_version() {
+  ./bash --version | head -1 | awk -F" " '{print $4}' | awk -F"(" '{print $1}'
+}
