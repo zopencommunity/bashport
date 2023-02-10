@@ -1,5 +1,5 @@
 diff --git a/Makefile.in b/Makefile.in
-index 0b4df73..ca28d7c 100644
+index 0b4df73..62c946e 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -145,7 +145,7 @@ LOCALE_DEFS = -DLOCALEDIR='"$(localedir)"' -DPACKAGE='"$(PACKAGE)"'
@@ -27,7 +27,15 @@ index 0b4df73..ca28d7c 100644
  subst.o: $(srcdir)/config-top.h
  builtins/cd.o: $(srcdir)/config-top.h
  builtins/command.o: $(srcdir)/config-top.h
-@@ -1188,6 +1190,7 @@ sig.o: make_cmd.h subst.h sig.h pathnames.h externs.h execute_cmd.h
+@@ -1180,6 +1182,7 @@ shell.o: flags.h trap.h mailcheck.h builtins.h $(DEFSRC)/common.h
+ shell.o: jobs.h siglist.h input.h execute_cmd.h findcmd.h bashhist.h bashline.h
+ shell.o: ${GLOB_LIBSRC}/strmatch.h ${BASHINCDIR}/posixtime.h ${BASHINCDIR}/posixwait.h
+ shell.o: ${BASHINCDIR}/ocache.h ${BASHINCDIR}/chartypes.h assoc.h alias.h
++sig.o: CCFLAGS+=-qNOOPT
+ sig.o: config.h bashtypes.h
+ sig.o: shell.h syntax.h config.h bashjmp.h ${BASHINCDIR}/posixjmp.h command.h ${BASHINCDIR}/stdc.h error.h
+ sig.o: general.h xmalloc.h bashtypes.h variables.h arrayfunc.h conftypes.h array.h hashlib.h
+@@ -1188,6 +1191,7 @@ sig.o: make_cmd.h subst.h sig.h pathnames.h externs.h execute_cmd.h
  sig.o: jobs.h siglist.h trap.h $(DEFSRC)/common.h bashline.h bashhist.h
  sig.o: ${DEFDIR}/builtext.h
  siglist.o: config.h bashtypes.h siglist.h trap.h 
