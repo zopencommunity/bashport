@@ -1,21 +1,29 @@
 diff --git a/sig.c b/sig.c
-index 840d577..8e871c1 100644
+index 840d577..fccb8b9 100644
 --- a/sig.c
 +++ b/sig.c
-@@ -349,8 +349,6 @@ reset_terminating_signals ()
+@@ -341,23 +341,20 @@ void
+ reset_terminating_signals ()
+ {
+   register int i;
+-#if defined (HAVE_POSIX_SIGNALS)
+-  struct sigaction act;
+-#endif
+
+   if (termsigs_initialized == 0)
      return;
- 
+
  #if defined (HAVE_POSIX_SIGNALS)
 -  act.sa_flags = 0;
 -  sigemptyset (&act.sa_mask);
    for (i = 0; i < TERMSIGS_LENGTH; i++)
      {
++  struct sigaction act = {0};
        /* Skip a signal if it's trapped or handled specially, because the
-@@ -358,6 +356,8 @@ reset_terminating_signals ()
+ 	 trap code will restore the correct value. */
        if (signal_is_trapped (XSIG (i)) || signal_is_special (XSIG (i)))
  	continue;
- 
-+  act.sa_flags = 0;
+
 +  sigemptyset (&act.sa_mask);
        act.sa_handler = XHANDLER (i);
        act.sa_flags = XSAFLAGS (i);
