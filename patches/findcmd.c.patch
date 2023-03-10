@@ -1,0 +1,18 @@
+diff --git a/findcmd.c b/findcmd.c
+index 95f231e..da6ac53 100644
+--- a/findcmd.c
++++ b/findcmd.c
+@@ -119,8 +119,12 @@ file_status (name)
+   int r;
+ 
+   /* Determine whether this file exists or not. */
+-  if (stat (name, &finfo) < 0)
++  if (stat (name, &finfo) < 0) {
++#ifdef __MVS__
++    if (!(__errno2() == 93586002 /* External Link */ && lstat(name, &finfo) == 0))
++#endif
+     return (0);
++  }
+ 
+   /* If the file is a directory, then it is not "executable" in the
+      sense of the shell. */
