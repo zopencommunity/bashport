@@ -1,16 +1,18 @@
 diff --git a/findcmd.c b/findcmd.c
-index da6ac53..069848b 100644
+index 95f231e..278dbb9 100644
 --- a/findcmd.c
 +++ b/findcmd.c
-@@ -121,7 +121,10 @@ file_status (name)
+@@ -119,8 +119,11 @@ file_status (name)
+   int r;
+ 
    /* Determine whether this file exists or not. */
-   if (stat (name, &finfo) < 0) {
- #ifdef __MVS__
--    if (!(__errno2() == 93586002 /* External Link */ && lstat(name, &finfo) == 0))
-+    /* Workaround for z/OS not supporting stat on external links
-+       Run bpxmtext 05940252 to get more info */
-+    if (!(__errno2() == 0x05940252 /* JRExternalLink */ && 
-+        lstat(name, &finfo) == 0))
- #endif
-     return (0);
-   }
+-  if (stat (name, &finfo) < 0)
+-    return (0);
++  if (stat (name, &finfo) < 0) {
++    /* Workaround for z/OS not supporting stat on external links */
++    if (!(lstat(name, &finfo) == 0) && S_ISEXTL(finfo.st_mode,finfo.st_genvalue)) 
++      return (0);
++  }
+ 
+   /* If the file is a directory, then it is not "executable" in the
+      sense of the shell. */
