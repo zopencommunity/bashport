@@ -493,13 +493,13 @@ index 0000000..be4eb57
 +    [[noreturn]] void     exit (int) noexcept;
 +  #else
 +    #ifdef _NO_PROTO
-+      __noreturn__ void     abort (); 
++      void     abort (); 
 +      int      atexit ();
-+      __noreturn__ void     exit (); 
++      void     exit (); 
 +    #else
-+      __noreturn__ void     abort (void); 
++      void     abort (void); 
 +      int      atexit (void (*)(void));
-+      __noreturn__ void     exit (int); 
++      void     exit (int); 
 +    #endif
 +  #endif
 + 
@@ -1295,7 +1295,7 @@ index 0000000..be4eb57
 +      #if __EDC_TARGET >= __EDC_LE4107 && __cplusplus >= 201103L
 +        [[noreturn]] void _Exit(int) noexcept;
 +      #else 
-+        __new4107(__noreturn__ void,_Exit,(int)); 
++        __new4107(void,_Exit,(int)); 
 +      #endif
 + 
 +    #endif  /* __C99 OR __TR1 */
