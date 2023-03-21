@@ -1,8 +1,8 @@
 diff --git a/findcmd.c b/findcmd.c
-index 95f231e..278dbb9 100644
+index 95f231e..77aae36 100644
 --- a/findcmd.c
 +++ b/findcmd.c
-@@ -119,8 +119,11 @@ file_status (name)
+@@ -119,8 +119,15 @@ file_status (name)
    int r;
  
    /* Determine whether this file exists or not. */
@@ -10,8 +10,12 @@ index 95f231e..278dbb9 100644
 -    return (0);
 +  if (stat (name, &finfo) < 0) {
 +    /* Workaround for z/OS not supporting stat on external links */
-+    if (!(lstat(name, &finfo) == 0) && S_ISEXTL(finfo.st_mode,finfo.st_genvalue)) 
++    int old_errno = errno;
++    if (!(errno == ENOENT && lstat(name, &finfo) == 0 && S_ISEXTL(finfo.st_mode,finfo.st_genvalue))) {
++      /* lstat may reset errno */
++      errno = old_errno;
 +      return (0);
++    }
 +  }
  
    /* If the file is a directory, then it is not "executable" in the
