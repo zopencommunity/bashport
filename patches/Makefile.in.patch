@@ -11,35 +11,3 @@ index 0b4df73..62c946e 100644
  
  STATIC_LD = @STATIC_LD@
  LOCAL_LDFLAGS = @LOCAL_LDFLAGS@
-@@ -654,6 +654,7 @@ buildversion.o: version.h patchlevel.h conftypes.h
- 
- # old rules
- GRAM_H = parser-built
-+y.tab.o: CCFLAGS+=-qNOOPT
- y.tab.o: y.tab.h y.tab.c ${GRAM_H} command.h ${BASHINCDIR}/stdc.h input.h
- ${GRAM_H}:	y.tab.h
- 	@-if test -f y.tab.h ; then \
-@@ -1011,6 +1012,7 @@ nojobs.o: $(srcdir)/config-top.h
- execute_cmd.o: $(srcdir)/config-top.h
- variables.o: $(srcdir)/config-top.h
- findcmd.o: $(srcdir)/config-top.h
-+subst.o: CCFLAGS+=-qNOOPT
- subst.o: $(srcdir)/config-top.h
- builtins/cd.o: $(srcdir)/config-top.h
- builtins/command.o: $(srcdir)/config-top.h
-@@ -1180,6 +1182,7 @@ shell.o: flags.h trap.h mailcheck.h builtins.h $(DEFSRC)/common.h
- shell.o: jobs.h siglist.h input.h execute_cmd.h findcmd.h bashhist.h bashline.h
- shell.o: ${GLOB_LIBSRC}/strmatch.h ${BASHINCDIR}/posixtime.h ${BASHINCDIR}/posixwait.h
- shell.o: ${BASHINCDIR}/ocache.h ${BASHINCDIR}/chartypes.h assoc.h alias.h
-+sig.o: CCFLAGS+=-qNOOPT
- sig.o: config.h bashtypes.h
- sig.o: shell.h syntax.h config.h bashjmp.h ${BASHINCDIR}/posixjmp.h command.h ${BASHINCDIR}/stdc.h error.h
- sig.o: general.h xmalloc.h bashtypes.h variables.h arrayfunc.h conftypes.h array.h hashlib.h
-@@ -1188,6 +1191,7 @@ sig.o: make_cmd.h subst.h sig.h pathnames.h externs.h execute_cmd.h
- sig.o: jobs.h siglist.h trap.h $(DEFSRC)/common.h bashline.h bashhist.h
- sig.o: ${DEFDIR}/builtext.h
- siglist.o: config.h bashtypes.h siglist.h trap.h 
-+stringlib.o: CCFLAGS+=-qNOOPT
- stringlib.o: bashtypes.h ${BASHINCDIR}/chartypes.h
- stringlib.o: shell.h syntax.h config.h bashjmp.h ${BASHINCDIR}/posixjmp.h command.h ${BASHINCDIR}/stdc.h error.h
- stringlib.o: general.h xmalloc.h bashtypes.h variables.h arrayfunc.h conftypes.h array.h hashlib.h
