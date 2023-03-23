@@ -1,0 +1,21 @@
+diff --git a/configure b/configure
+index 4731375..1ce862e 100755
+--- a/configure
++++ b/configure
+@@ -3281,6 +3281,7 @@ m68k-sysv)	opt_bash_malloc=no ;;	# fixes file descriptor leak in closedir
+ *-beos*)	opt_bash_malloc=no ;;	# they say it's suitable
+ # These need additional investigation
+ sparc-linux*)	opt_bash_malloc=no ;;	# sparc running linux; requires ELF
++i370-*)		opt_bash_malloc=no ;;	# z/OS machines
+ *-aix*)		opt_bash_malloc=no ;;	# AIX machines
+ *-cygwin*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN environment
+ # These lack a working sbrk(2)
+@@ -18058,7 +18059,7 @@ fi
+ printf "%s\n" "$ac_cv_sys_interpreter" >&6; }
+ interpval=$ac_cv_sys_interpreter
+ 
+-if test $ac_cv_sys_interpreter = yes; then
++if test $ac_cv_sys_interpreter = yes -a test "$host_os" != "openedition" ; then
+ printf "%s\n" "#define HAVE_HASH_BANG_EXEC 1" >>confdefs.h
+ 
+ fi
