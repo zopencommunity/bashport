@@ -1,18 +1,8 @@
 diff --git a/configure b/configure
-index 4731375..04bcf67 100755
+index 4731375..9273f18 100755
 --- a/configure
 +++ b/configure
-@@ -3258,9 +3258,6 @@ host_os=$*
- IFS=$ac_save_IFS
- case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
- 
--
--
--
- opt_bash_malloc=yes
- opt_afs=no
- opt_curses=no
-@@ -3281,6 +3278,7 @@ m68k-sysv)	opt_bash_malloc=no ;;	# fixes file descriptor leak in closedir
+@@ -3281,6 +3281,7 @@ m68k-sysv)	opt_bash_malloc=no ;;	# fixes file descriptor leak in closedir
  *-beos*)	opt_bash_malloc=no ;;	# they say it's suitable
  # These need additional investigation
  sparc-linux*)	opt_bash_malloc=no ;;	# sparc running linux; requires ELF
@@ -20,7 +10,7 @@ index 4731375..04bcf67 100755
  *-aix*)		opt_bash_malloc=no ;;	# AIX machines
  *-cygwin*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN environment
  # These lack a working sbrk(2)
-@@ -21600,13 +21598,16 @@ then :
+@@ -21600,13 +21601,16 @@ then :
    printf %s "(cached) " >&6
  else $as_nop
    bash_cv_dev_fd=""
@@ -39,7 +29,7 @@ index 4731375..04bcf67 100755
  fi
  if test -z "$bash_cv_dev_fd" ; then
    if test -d /proc/self/fd && (exec test -r /proc/self/fd/0 < /dev/null) ; then
-@@ -21623,7 +21624,11 @@ printf "%s\n" "$bash_cv_dev_fd" >&6; }
+@@ -21623,7 +21627,11 @@ printf "%s\n" "$bash_cv_dev_fd" >&6; }
  if test $bash_cv_dev_fd = "standard"; then
    printf "%s\n" "#define HAVE_DEV_FD 1" >>confdefs.h
  
