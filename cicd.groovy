@@ -1,5 +1,5 @@
 node('linux')
-{ 
+{
           stage ('Poll') {
                 checkout([
                         $class: 'GitSCM',
