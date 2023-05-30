@@ -1,0 +1,13 @@
+diff --git a/Makefile.in b/Makefile.in
+index 0b4df73..62c946e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -145,7 +145,7 @@ LOCALE_DEFS = -DLOCALEDIR='"$(localedir)"' -DPACKAGE='"$(PACKAGE)"'
+ 
+ LOCAL_LIBS = @LOCAL_LIBS@
+ LIBS = $(BUILTINS_LIB) $(LIBRARIES) @LIBS@
+-LIBS_FOR_BUILD = 
++LIBS_FOR_BUILD = @LIBS@
+ 
+ STATIC_LD = @STATIC_LD@
+ LOCAL_LDFLAGS = @LOCAL_LDFLAGS@
