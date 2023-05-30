@@ -1,10 +1,19 @@
 export ZOPEN_GIT_URL="https://github.com/bminor/bash.git"
-export ZOPEN_GIT_DEPS="git make gzip tar"
+export ZOPEN_GIT_BRANCH="devel"
+export ZOPEN_GIT_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison"
 export ZOPEN_TARBALL_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.15.tar.gz"
 export ZOPEN_TARBALL_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses"
 export ZOPEN_TYPE="TARBALL"
-export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DNSIG=42"
+export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1"
 export ZOPEN_COMP=CLANG
+
+rm -f patches
+if [ "${ZOPEN_TYPE}x" = "TARBALLx" ]; then
+	ln -s tarball-patches patches
+else
+	ln -s git-patches patches
+  export ZOPEN_EXTRA_CONFIGURE_OPTS="--without-libintl-prefix --disable-nls"
+fi
 
 zopen_check_results()
 {
