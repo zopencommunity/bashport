@@ -3,7 +3,7 @@ export ZOPEN_GIT_BRANCH="devel"
 export ZOPEN_GIT_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison"
 export ZOPEN_TARBALL_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.15.tar.gz"
 export ZOPEN_TARBALL_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses"
-export ZOPEN_TYPE="TARBALL"
+export ZOPEN_TYPE="GIT"
 export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1"
 export ZOPEN_COMP=CLANG
 
@@ -13,6 +13,8 @@ if [ "${ZOPEN_TYPE}x" = "TARBALLx" ]; then
 else
 	ln -s git-patches patches
   export ZOPEN_EXTRA_CONFIGURE_OPTS="--without-libintl-prefix --disable-nls"
+  export ZOPEN_MAKE_OPTS="-j\$ZOPEN_NUM_JOBS LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
+  export ZOPEN_INSTALL_OPTS="-j\$ZOPEN_NUM_JOBS LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
 fi
 
 zopen_check_results()
