@@ -1,0 +1,46 @@
+diff --git a/tests/run-all b/tests/run-all
+index 19e3229b..65a26029 100644
+--- a/tests/run-all
++++ b/tests/run-all
+@@ -52,13 +52,34 @@ rm -f ${BASH_TSTOUT}
+ 
+ echo Any output from any test, unless otherwise noted, indicates a possible anomaly
+ 
+-for x in run-*
+-do
+-	case $x in
+-	$0|run-minimal|run-gprof)	;;
+-	*.orig|*~) ;;
+-	*)	echo $x ; sh $x ; rm -f ${BASH_TSTOUT} ;;
+-	esac
++failures=0
++successes=0
++
++for x in run-*; do
++  case $x in
++    $0|run-minimal|run-gprof) ;;
++    *.orig|*~) ;;
++    *)
++      echo $x
++      output=$(sh $x)
++      if [ -n "$output" ]; then
++        echo "..Failed:"
++        echo $output
++        failures=$((failures + 1))
++      else
++        echo "...Succeeded"
++        successes=$((successes + 1))
++      fi
++      rm -f "${BASH_TSTOUT}"
++      ;;
++  esac
+ done
+ 
++total=$((failures + successes))
++percentage=$((successes * 100 / total))
++
++echo "Total # of failures: $failures"
++echo "Total # of successes: $successes"
++echo "Percentage: $percentage%"
++
+ exit 0
