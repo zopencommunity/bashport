@@ -1,0 +1,72 @@
+diff --git a/tests/run-all b/tests/run-all
+index 19e3229b..5f6b6405 100644
+--- a/tests/run-all
++++ b/tests/run-all
+@@ -27,6 +27,10 @@ trap 'rm -f $BASH_TSTOUT ; exit' 1 2 3 15
+ trap 'rm -f $BASH_TSTOUT' 0
+ 
+ PATH=.:$PATH	# just to get recho/zecho/printenv if not run via `make tests'
++if [ "$(uname -s)" = "OS/390" ]; then
++  export ORIG_DIFF=$(whence diff)
++  PATH=$PWD/zos:$PATH	# just to get recho/zecho/printenv if not run via `make tests'
++fi
+ export PATH
+ 
+ # unset BASH_ENV only if it is set
+@@ -52,13 +56,34 @@ rm -f ${BASH_TSTOUT}
+ 
+ echo Any output from any test, unless otherwise noted, indicates a possible anomaly
+ 
+-for x in run-*
+-do
+-	case $x in
+-	$0|run-minimal|run-gprof)	;;
+-	*.orig|*~) ;;
+-	*)	echo $x ; sh $x ; rm -f ${BASH_TSTOUT} ;;
+-	esac
++failures=0
++successes=0
++
++for x in run-*; do
++  case $x in
++    $0|run-minimal|run-gprof) ;;
++    *.orig|*~) ;;
++    *)
++      echo $x
++      output=$(sh $x)
++      if [ -n "$output" ]; then
++        echo "..Failed:"
++        echo "$output"
++        failures=$((failures + 1))
++      else
++        echo "...Succeeded"
++        successes=$((successes + 1))
++      fi
++      rm -f "${BASH_TSTOUT}"
++      ;;
++  esac
+ done
+ 
++total=$((failures + successes))
++percentage=$((successes * 100 / total))
++
++echo "Total # of failures: $failures"
++echo "Total # of successes: $successes"
++echo "Percentage: $percentage%"
++
+ exit 0
+diff --git a/tests/zos/diff b/tests/zos/diff
+new file mode 100755
+index 00000000..aa74350d
+--- /dev/null
++++ b/tests/zos/diff
+@@ -0,0 +1,9 @@
++# Strip out strings starting with "EDC" from the first argument and the subsequent period
++stripped_file=$(mktemp)
++sed -E 's/EDC[^[:space:]]* ([^.]*)\./\1/g' "$1" > "$stripped_file"
++
++# Call the original diff command with the modified arguments
++$ORIG_DIFF "$stripped_file" "$2"
++
++# Clean up the temporary file
++rm "$stripped_file"
