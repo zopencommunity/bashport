@@ -8,7 +8,7 @@ index 19e3229b..5f6b6405 100644
  PATH=.:$PATH	# just to get recho/zecho/printenv if not run via `make tests'
 +if [ "$(uname -s)" = "OS/390" ]; then
 +  export ORIG_DIFF=$(whence diff)
-+  PATH=$PWD/zos:$PATH	# just to get recho/zecho/printenv if not run via `make tests'
++  PATH=$PWD/zos:$PATH
 +fi
  export PATH
  
