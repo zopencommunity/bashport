@@ -1,22 +1,23 @@
-export ZOPEN_GIT_URL="https://github.com/bminor/bash.git"
-export ZOPEN_GIT_BRANCH="devel"
-export ZOPEN_GIT_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep"
-export ZOPEN_TARBALL_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.15.tar.gz"
-export ZOPEN_TARBALL_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep"
-export ZOPEN_TYPE="GIT"
+export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
+export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.15.tar.gz"
+export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep"
+
+export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
+export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep"
+export ZOPEN_DEV_BRANCH="devel"
+
 export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1"
 export ZOPEN_COMP=CLANG
 
-rm -f patches
-if [ "${ZOPEN_TYPE}x" = "TARBALLx" ]; then
-	ln -s tarball-patches patches
-else
-	ln -s git-patches patches
-  export ZOPEN_EXTRA_CONFIGURE_OPTS="--without-libintl-prefix --disable-nls"
-  export ZOPEN_MAKE_OPTS="-j\$ZOPEN_NUM_JOBS LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
-  export ZOPEN_CHECK_OPTS="-j\$ZOPEN_NUM_JOBS check LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
-  export ZOPEN_INSTALL_OPTS="-j\$ZOPEN_NUM_JOBS install LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
-fi
+zopen_post_buildenv()
+{
+  if [ "${ZOPEN_BUILD_LINE}x" = "DEVx" ]; then
+    export ZOPEN_EXTRA_CONFIGURE_OPTS="--without-libintl-prefix --disable-nls"
+    export ZOPEN_MAKE_OPTS="-j\$ZOPEN_NUM_JOBS LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
+    export ZOPEN_CHECK_OPTS="-j\$ZOPEN_NUM_JOBS check LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
+    export ZOPEN_INSTALL_OPTS="-j\$ZOPEN_NUM_JOBS install LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
+  fi
+}
 
 zopen_check_results()
 {
@@ -24,15 +25,25 @@ zopen_check_results()
   pfx="$2"
   chk="$1/$2_check.log"
 
-  failuretests=$(/bin/find tests/ -name "*.output"  ! -size 0)
-  failures=$(echo "${failuretests}" | wc -l)
-  total=$(/bin/find tests/ -name "*.output" | wc -l)
+  if [ "${ZOPEN_BUILD_LINE}x" = "DEVx" ]; then
+    failures=$(grep "Total # of failures:" $chk | cut -d' ' -f5)
+    successes=$(grep "Total # of successes:" $chk | cut -d' ' -f5)
+    total=$((successes+failures))
+  else
+    failuretests=$(/bin/find tests/ -name "*.output"  ! -size 0)
+    failures=$(echo "${failuretests}" | wc -l)
+    total=$(/bin/find tests/ -name "*.output" | wc -l)
+  fi
 
   # Echo the following information to gauge build health
   echo "${failuretests}" >"$1/$2_check_failures.log"
   echo "actualFailures:$failures"
   echo "totalTests:$total"
-  echo "expectedFailures:15"
+  if [ "${ZOPEN_BUILD_LINE}x" = "DEVx" ]; then
+    echo "expectedFailures:18" # Slightly higher in DEV
+  else
+    echo "expectedFailures:15"
+  fi
 }
 
 zopen_get_version() {

@@ -1,3 +1,4 @@
-bash-*
-log
+bash*/
+log*/
 nohup.out
+install/
