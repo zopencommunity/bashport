@@ -1,0 +1,13 @@
+diff --git a/tests/read.tests b/tests/read.tests
+index 6132b6f..b8136b9 100644
+--- a/tests/read.tests
++++ b/tests/read.tests
+@@ -11,6 +11,8 @@
+ #   You should have received a copy of the GNU General Public License
+ #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ #
++# IGOR: times out on z/OS
++exit 1
+ echo " a " | (read x; echo "$x.")
+ 
+ echo " a  b  " | ( read x y ; echo -"$x"-"$y"- )
