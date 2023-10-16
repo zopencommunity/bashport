@@ -46,6 +46,12 @@ zopen_check_results()
   fi
 }
 
+zopen_append_to_zoslib_env() {
+ cat <<EOF
+ASCII_TERMINFO|set|PROJECT_ROOT/../../ncurses/ncurses/share/terminfo/
+EOF
+}
+
 zopen_get_version() {
   ./bash --version | head -1 | awk -F" " '{print $4}' | awk -F"(" '{print $1}'
 }
