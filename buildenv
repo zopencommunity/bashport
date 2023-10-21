@@ -1,5 +1,7 @@
+# bump: bash-version /BASH_VERSION="(.*)"/ https://ftp.gnu.org/gnu/bash/|re:/href="bash-([\d.]+).tar.gz"/$1/|semver:*
+BASH_VERSION="5.2.15"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
-export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-5.2.15.tar.gz"
+export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
