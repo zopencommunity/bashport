@@ -1,0 +1,28 @@
+diff --git a/sig.c b/sig.c
+index d44ce358..ea706af2 100644
+--- a/sig.c
++++ b/sig.c
+@@ -347,6 +347,7 @@ reset_terminating_signals (void)
+   register int i;
+ #if defined (HAVE_POSIX_SIGNALS)
+   struct sigaction act;
++  memset (&act, 0, sizeof (act));
+ #endif
+ 
+   if (termsigs_initialized == 0)
+@@ -354,7 +355,6 @@ reset_terminating_signals (void)
+ 
+ #if defined (HAVE_POSIX_SIGNALS)
+   act.sa_flags = 0;
+-  sigemptyset (&act.sa_mask);
+   for (i = 0; i < TERMSIGS_LENGTH; i++)
+     {
+       /* Skip a signal if it's trapped or handled specially, because the
+@@ -362,6 +362,7 @@ reset_terminating_signals (void)
+       if (signal_is_trapped (XSIG (i)) || signal_is_special (XSIG (i)))
+ 	continue;
+ 
++      sigemptyset (&act.sa_mask);
+       act.sa_handler = XHANDLER (i);
+       act.sa_flags = XSAFLAGS (i);
+       sigaction (XSIG (i), &act, (struct sigaction *) NULL);
