@@ -1,0 +1,17 @@
+diff --git a/tests/coproc.tests b/tests/coproc.tests
+index a7359320..07651bf5 100644
+--- a/tests/coproc.tests
++++ b/tests/coproc.tests
+@@ -65,7 +65,11 @@ read <&${COPROC[0]}
+ echo $REPLY
+ echo ${COPROC[@]}
+ 
+-cat /etc/passwd | grep root | awk -F: '{print $1;}' | sed 1q
++if [ -r "/etc/passwd" ]; then
++  cat /etc/passwd | grep root | awk -F: '{print $1;}' | sed 1q
++else
++  echo "root" # Some platforms do not have a /etc/passwd file
++fi
+ 
+ exec 4<&${COPROC[0]}-
+ exec >&${COPROC[1]}-

@@ -1,0 +1,64 @@
+diff --git a/tests/array.tests b/tests/array.tests
+index b6d6c9cc..e6cddd6c 100644
+--- a/tests/array.tests
++++ b/tests/array.tests
+@@ -16,7 +16,7 @@
+ set +o posix
+ 
+ set +a
+-# The calls to egrep -v are to filter out builtin array variables that are
++# The calls to grep -E -v are to filter out builtin array variables that are
+ # automatically set and possibly contain values that vary.
+ 
+ # first make sure we handle the basics
+@@ -61,7 +61,7 @@ echo ${a[@]}
+ echo ${a[*]}
+ 
+ # this should print out values, too
+-declare -a | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++declare -a | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ 
+ unset a[7]
+ echo ${a[*]}
+@@ -92,11 +92,11 @@ echo ${a[@]}
+ readonly a[5]
+ readonly a
+ # these two lines should output `declare' commands
+-readonly -a | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+-declare -ar | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++readonly -a | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++declare -ar | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ # this line should output `readonly' commands, even for arrays
+ set -o posix
+-readonly -a | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++readonly -a | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ set +o posix
+ 
+ declare -a d='([1]="" [2]="bdef" [5]="hello world" "test")'
+@@ -111,7 +111,7 @@ b=([0]=this [1]=is [2]=a [3]=test [4]="$PS1" [5]=$pass)
+ 
+ echo ${b[@]:2:3}
+ 
+-declare -pa | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++declare -pa | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ 
+ a[3]="this is a test"
+ 
+@@ -131,7 +131,7 @@ d=([1]="test test" [-65]=negative )
+ unset d[12]
+ unset e[*]
+ 
+-declare -a | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++declare -a | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ 
+ ps1='hello'
+ unset ps1[2]
+@@ -157,7 +157,7 @@ echo ${vv[0]} ${vv[3]}
+ echo ${vv[@]}
+ unset vv
+ 
+-declare -a | egrep -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
++declare -a | grep -E -v '(BASH_VERSINFO|PIPESTATUS|GROUPS)'
+ 
+ export rv
+ #set
