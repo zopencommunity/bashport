@@ -1,0 +1,13 @@
+diff --git a/tests/redir.tests b/tests/redir.tests
+index a17da0fc..59f22af2 100644
+--- a/tests/redir.tests
++++ b/tests/redir.tests
+@@ -59,7 +59,7 @@ cat < $z
+ 
+ echo "Point 1"
+ 
+-exec 3</etc/passwd
++exec 3</etc/profile
+ exec 4>$TMPDIR/bash-a
+ exec 5>$TMPDIR/bash-b
+ echo "Point 2"
