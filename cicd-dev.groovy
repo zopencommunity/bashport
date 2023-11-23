@@ -18,6 +18,6 @@ node('linux')
       }
 
       stage('Build') {
-          build job: 'Port-Pipeline', parameters: [string(name: 'PORT_GITHUB_REPO', value: 'https://github.com/ZOSOpenTools/bashport.git'), string(name: 'PORT_DESCRIPTION', value: 'Bash is the GNU Projects the Bourne Again SHell' ), string(name: 'BUILD_LINE', value: 'DEV') ]
+          build job: 'Port-Pipeline', parameters: [string(name: 'PORT_GITHUB_REPO', value: 'https://github.com/ZOSOpenTools/bashport.git'), string(name: 'PORT_DESCRIPTION', value: 'Bash is the GNU Projects the Bourne Again SHell' ), string(name: 'BUILD_LINE', value: 'DEV'),  string(name: 'NODE_LABEL', value: "v2r4")]
       }
 }
