@@ -1,0 +1,123 @@
+diff --git a/builtins/kill.def b/builtins/kill.def
+index c655092..ae4e1c8 100644
+--- a/builtins/kill.def
++++ b/builtins/kill.def
+@@ -22,7 +22,7 @@ $PRODUCES kill.c
+ 
+ $BUILTIN kill
+ $FUNCTION kill_builtin
+-$SHORT_DOC kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
++$SHORT_DOC kill [-s sigspec | -n signum | -K | -sigspec] pid | jobspec ... or kill -l [sigspec]
+ Send a signal to a job.
+ 
+ Send the processes identified by PID or JOBSPEC the signal named by
+@@ -32,9 +32,11 @@ SIGTERM is assumed.
+ Options:
+   -s sig	SIG is a signal name
+   -n sig	SIG is a signal number
+-  -l	list the signal names; if arguments follow `-l' they are
+-		assumed to be signal numbers for which names should be listed
+-  -L	synonym for -l
++  -K      Sends a superkill signal to force the ending of a process.
++          A kill signal must be sent prior to sending the superkill signal.
++  -l      list the signal names; if arguments follow `-l' they are
++          assumed to be signal numbers for which names should be listed
++  -L      synonym for -l
+ 
+ Kill is a shell builtin for two reasons: it allows job IDs to be used
+ instead of process IDs, and allows processes to be killed if the limit
+@@ -71,6 +73,7 @@ extern int errno;
+ #endif /* !errno */
+ 
+ static void kill_error PARAMS((pid_t, int));
++static void kill_error2 PARAMS((pid_t, int, int));
+ 
+ #if !defined (CONTINUE_AFTER_KILL_ERROR)
+ #  define CONTINUE_OR_FAIL return (EXECUTION_FAILURE)
+@@ -85,11 +88,13 @@ int
+ kill_builtin (list)
+      WORD_LIST *list;
+ {
+-  int sig, any_succeeded, listing, saw_signal, dflags;
++  int sig, any_succeeded, listing, saw_signal, dflags, superkill_flag;
+   char *sigspec, *word;
+   pid_t pid;
+   intmax_t pid_value;
+ 
++  superkill_flag = 0;
++
+   if (list == 0)
+     {
+       builtin_usage ();
+@@ -112,6 +117,12 @@ kill_builtin (list)
+ 	  listing++;
+ 	  list = list->next;
+ 	}
++      /* Set the flag if -K option is found */
++      else if (ISOPTION (word, 'K'))
++	{
++	  superkill_flag = 1;
++	  list = list->next;
++	}
+       else if (ISOPTION (word, 's') || ISOPTION (word, 'n'))
+ 	{
+ 	  list = list->next;
+@@ -194,7 +205,16 @@ use_sigspec:
+ 	{
+ 	  pid = (pid_t) pid_value;
+ 
+-	  if (kill_pid (pid, sig, pid < -1) < 0)
++    /* If the superkill flag is set, call __superkill for each PID */
++    if (superkill_flag)
++    {
++      if (__superkill(pid) < 0)
++        {
++          kill_error2 (pid, errno, __errno2());
++          CONTINUE_OR_FAIL;
++        }
++    }
++	  else if (kill_pid (pid, sig, pid < -1) < 0)
+ 	    {
+ 	      if (errno == EINVAL)
+ 		sh_invalidsig (sigspec);
+@@ -238,7 +258,17 @@ use_sigspec:
+ 
+ 	  UNBLOCK_CHILD (oset);
+ 
+-	  if (kill_pid (pid, sig, 1) < 0)
++    /* If the superkill flag is set, call __superkill for each PID */
++      if (superkill_flag)
++	{
++	  if (__superkill(pid) < 0) /* Call __superkill before regular kill */
++	    {
++	      sh_badpid (list->word->word); /* Handle failure for __superkill */
++	      CONTINUE_OR_FAIL;
++	    }
++	}
++
++	 else if (kill_pid (pid, sig, 1) < 0)
+ 	    {
+ 	      if (errno == EINVAL)
+ 		sh_invalidsig (sigspec);
+@@ -274,3 +304,21 @@ kill_error (pid, e)
+     x = _("Unknown error");
+   builtin_error ("(%ld) - %s", (long)pid, x);
+ }
++
++static void
++kill_error2 (pid_t pid, int e, int e2)
++{
++  char *x;
++
++  x = strerror (e);
++  if (x == 0)
++    x = _("Unknown error");
++
++  /* Needs a kill before superkill */
++  if ((e== EINVAL) &&
++    ((e2 & 0x0000FFFF) == 1496)) {
++    builtin_error ("(%ld) - %s", (long)pid, "Cannot superkill without prior KILL signal to process.");
++  } else {
++    builtin_error ("(%ld) - %s (errno2: %x)", (long)pid, x, e2);
++  }
++}
