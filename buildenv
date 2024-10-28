@@ -2,6 +2,7 @@
 BASH_VERSION="5.2.32"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
+export ZOPEN_CATEGORIES="shell"
 export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
