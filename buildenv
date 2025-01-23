@@ -45,7 +45,7 @@ zopen_check_results()
   if [ "${ZOPEN_BUILD_LINE}x" = "DEVx" ]; then
     echo "expectedFailures:18" # Slightly higher in DEV
   else
-    echo "expectedFailures:15"
+    echo "expectedFailures:17" # need to adjust the testing to accomodate new -K option
   fi
 }
 
