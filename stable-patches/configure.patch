@@ -1,5 +1,5 @@
 diff --git a/configure b/configure
-index 4731375..9273f18 100755
+index 56e8e6f..85b806b 100755
 --- a/configure
 +++ b/configure
 @@ -3281,6 +3281,7 @@ m68k-sysv)	opt_bash_malloc=no ;;	# fixes file descriptor leak in closedir
@@ -41,3 +41,13 @@ index 4731375..9273f18 100755
  
  elif test $bash_cv_dev_fd = "whacky"; then
    printf "%s\n" "#define HAVE_DEV_FD 1" >>confdefs.h
+@@ -21646,6 +21654,9 @@ else $as_nop
+ 
+ fi
+ 
++# z/OS workaround since /dev/stdin is broken in 3.1
++   bash_cv_dev_stdin=absent
++
+ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $bash_cv_dev_stdin" >&5
+ printf "%s\n" "$bash_cv_dev_stdin" >&6; }
+ if test $bash_cv_dev_stdin = "present"; then
