@@ -12,6 +12,9 @@ export ZOPEN_DEV_BRANCH="devel"
 export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DSSH_SOURCE_BASHRC=1 -DSYS_BASHRC='\\\"/etc/bashrc\\\"' -DNON_INTERACTIVE_LOGIN_SHELLS=1"
 export ZOPEN_COMP=CLANG
 
+export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv2r5 -march=z13"
+export ZOPEN_SYSTEM_PREREQS="zos25"
+
 zopen_init()
 {
   cp ../stdlib.h .
