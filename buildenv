@@ -3,10 +3,10 @@ BASH_VERSION="5.2.37"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_CATEGORIES="shell"
-export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext"
+export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
-export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext"
+export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext zusage"
 export ZOPEN_DEV_BRANCH="devel"
 
 export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DSSH_SOURCE_BASHRC=1 -DSYS_BASHRC='\\\"/etc/bashrc\\\"' -DNON_INTERACTIVE_LOGIN_SHELLS=1"
@@ -14,6 +14,11 @@ export ZOPEN_COMP=CLANG
 
 export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv2r5 -march=z13"
 export ZOPEN_SYSTEM_PREREQS="zos25"
+
+zopen_init()
+{
+  cp ../stdlib.h .
+}
 
 zopen_post_buildenv()
 {
