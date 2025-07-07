@@ -1,3 +1,16 @@
+diff --git a/tests/read.tests b/tests/read.tests
+index c06cd7a..8a563bf 100644
+--- a/tests/read.tests
++++ b/tests/read.tests
+@@ -11,6 +11,8 @@
+ #   You should have received a copy of the GNU General Public License
+ #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ #
++# IGOR: times out
++exit 1
+ echo " a " | (read x; echo "$x.")
+ 
+ echo " a  b  " | ( read x y ; echo -"$x"-"$y"- )
 diff --git a/tests/run-alias b/tests/run-alias
 index 3b4f4dc..8e74f51 100644
 --- a/tests/run-alias
@@ -69,11 +82,11 @@ index 948b9e1..ed55699 100644
 -diff ${BASH_TSTOUT} attr.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} attr.right | tee attr.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-braces b/tests/run-braces
-index 554e218..34093b8 100644
+index 1045d1f..e8a3055 100644
 --- a/tests/run-braces
 +++ b/tests/run-braces
 @@ -1,2 +1,2 @@
- ${THIS_SH} ./braces.tests > ${BASH_TSTOUT}
+ ${THIS_SH} ./braces.tests > ${BASH_TSTOUT} 2>&1
 -diff ${BASH_TSTOUT} braces.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} braces.right | tee braces.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-builtins b/tests/run-builtins
@@ -135,11 +148,11 @@ index 520cb44..1a4c008 100644
 -diff ${BASH_TSTOUT} comsub-posix.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} comsub-posix.right | tee comsub.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-cond b/tests/run-cond
-index 603e739..0f2281a 100644
+index 2cbc86a..3b32986 100644
 --- a/tests/run-cond
 +++ b/tests/run-cond
-@@ -4,4 +4,4 @@ echo "warning: some of these tests will fail if extended pattern matching has no
- echo "warning: been compiled into the shell" >&2
+@@ -6,4 +6,4 @@ echo "warning: the text of system error messages may vary between systems and" >
+ echo "warning: produce diff output." >&2
  
  ${THIS_SH} ./cond.tests > ${BASH_TSTOUT} 2>&1
 -diff ${BASH_TSTOUT} cond.right && rm -f ${BASH_TSTOUT}
@@ -250,13 +263,13 @@ index 7b207fa..26af689 100644
 -diff ${BASH_TSTOUT} exportfunc.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} exportfunc.right | tee exportfunc.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-extglob b/tests/run-extglob
-index 149e34a..ffdf902 100644
+index a1464aa..029d744 100644
 --- a/tests/run-extglob
 +++ b/tests/run-extglob
 @@ -1,4 +1,4 @@
  PATH=$PATH:`pwd`
  export PATH
- ${THIS_SH} ./extglob.tests | grep -v '^expect' > ${BASH_TSTOUT}
+ ${THIS_SH} ./extglob.tests 2>&1 | grep -v '^expect' > ${BASH_TSTOUT}
 -diff ${BASH_TSTOUT} extglob.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} extglob.right | tee extglob.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-extglob2 b/tests/run-extglob2
@@ -662,11 +675,11 @@ index eed17fa..e6af2da 100644
 -diff ${BASH_TSTOUT} set-e.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} set-e.right | tee set.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-set-x b/tests/run-set-x
-index b999e69..3e9a179 100644
+index e6e2c49..763a3ea 100644
 --- a/tests/run-set-x
 +++ b/tests/run-set-x
 @@ -5,7 +5,7 @@ TEST_NAME='set-x'
- TEST_FILE="/tmp/${TEST_NAME}.check"
+ TEST_FILE="${BASH_TSTOUT}"
  ${THIS_SH} ./${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null
  set -f
 -diff $TEST_FILE ${TEST_NAME}.right && rm -f $TEST_FILE
@@ -754,16 +767,3 @@ index 2bdc1b8..19cc125 100644
  ${THIS_SH} ./vredir.tests > ${BASH_TSTOUT} 2>&1
 -diff ${BASH_TSTOUT} vredir.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} vredir.right | tee vredir.output && rm -f ${BASH_TSTOUT}
-diff --git a/tests/read.tests b/tests/read.tests
-index 6132b6f..b8136b9 100644
---- a/tests/read.tests
-+++ b/tests/read.tests
-@@ -11,6 +11,8 @@
- #   You should have received a copy of the GNU General Public License
- #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
- #
-+# IGOR: times out
-+exit 1
- echo " a " | (read x; echo "$x.")
- 
- echo " a  b  " | ( read x y ; echo -"$x"-"$y"- )

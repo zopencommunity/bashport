@@ -1,48 +1,48 @@
 diff --git a/lib/glob/smatch.c b/lib/glob/smatch.c
-index 379c2d2..4d7d6b0 100644
+index e42b8fc..3c6279c 100644
 --- a/lib/glob/smatch.c
 +++ b/lib/glob/smatch.c
-@@ -144,7 +144,7 @@ rangecmp (c1, c2, forcecoll)
+@@ -139,7 +139,7 @@ rangecmp (int c1, int c2, int forcecoll)
  #if defined (HAVE_STRCOLL)
  /* Returns 1 if chars C and EQUIV collate equally in the current locale. */
  static int
--collequiv (c, equiv)
-+bashcollequiv (c, equiv)
-      int c, equiv;
+-collseqcmp (int c, int equiv)
++bashcollequiv (int c, int equiv)
  {
-   if (charcmp (c, equiv, 1) == 0)
-@@ -157,8 +157,6 @@ collequiv (c, equiv)
+   /* Make sure characters >= 0x80 are compared as bytes in a UTF-8 locale. */
+   if (locale_utf8locale && (UTF8_SINGLEBYTE (c) == 0 || UTF8_SINGLEBYTE (equiv) == 0))
+@@ -155,8 +155,6 @@ collseqcmp (int c, int equiv)
  #endif
    
  }
 -#else
--#  define collequiv(c, equiv)	((c) == (equiv))
+-#  define collseqcmp(c, equiv)	((c) == (equiv))
  #endif
  
  #define _COLLSYM	_collsym
-@@ -334,7 +332,7 @@ is_cclass (c, name)
+@@ -329,7 +327,7 @@ is_cclass (int c, const char *name)
  #define STRLEN(S)		strlen(S)
  #define STRCMP(S1, S2)		strcmp((S1), (S2))
  #define RANGECMP(C1, C2, F)	rangecmp((C1), (C2), (F))
--#define COLLEQUIV(C1, C2)	collequiv((C1), (C2))
+-#define COLLEQUIV(C1, C2)	collseqcmp((C1), (C2))
 +#define COLLEQUIV(C1, C2)	bashcollequiv((C1), (C2))
  #define CTYPE_T			enum char_class
  #define IS_CCLASS(C, S)		is_cclass((C), (S))
  #include "sm_loop.c"
-@@ -425,7 +423,7 @@ rangecmp_wc (c1, c2, forcecoll)
+@@ -415,7 +413,7 @@ rangecmp_wc (wint_t c1, wint_t c2, int forcecoll)
  
  /* Returns 1 if wide chars C and EQUIV collate equally in the current locale. */
  static int
--collequiv_wc (c, equiv)
-+bashcollequiv_wc (c, equiv)
-      wint_t c, equiv;
+-collseqcmp_wc (wint_t c, wint_t equiv)
++bashcollequiv_wc (wint_t c, wint_t equiv)
  {
    wchar_t s, p;
-@@ -590,7 +588,7 @@ posix_cclass_only (pattern)
+ 
+@@ -574,7 +572,7 @@ posix_cclass_only (char *pattern)
  #define STRLEN(S)		wcslen(S)
  #define STRCMP(S1, S2)		wcscmp((S1), (S2))
  #define RANGECMP(C1, C2, F)	rangecmp_wc((C1), (C2), (F))
--#define COLLEQUIV(C1, C2)	collequiv_wc((C1), (C2))
+-#define COLLEQUIV(C1, C2)	collseqcmp_wc((C1), (C2))
 +#define COLLEQUIV(C1, C2)	bashcollequiv_wc((C1), (C2))
  #define CTYPE_T			enum char_class
  #define IS_CCLASS(C, S)		is_wcclass((C), (S))

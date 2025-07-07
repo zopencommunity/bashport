@@ -1,20 +1,31 @@
 diff --git a/tests/builtins.right b/tests/builtins.right
-index 4f51d43..0a91d67 100644
+index d708c18..52fad9c 100644
 --- a/tests/builtins.right
 +++ b/tests/builtins.right
-@@ -106,9 +106,9 @@ m n o p
+@@ -110,9 +110,9 @@ m n o p
  /tmp/bash-dir-a
  /tmp/bash-dir-a
- /tmp/bash-dir-a
+ /
 -./source5.sub: line 23: /tmp/source-notthere: No such file or directory
-+./source5.sub: line 23: /tmp/source-notthere: EDC5129I No such file or directory.
++./source5.sub: line 23: /tmp/source-notthere: EDC5129I No such file or directory
  after bad source 1
 -./source5.sub: line 30: /tmp/source-notthere: No such file or directory
-+./source5.sub: line 30: /tmp/source-notthere: EDC5129I No such file or directory.
++./source5.sub: line 30: /tmp/source-notthere: EDC5129I No such file or directory
  one - OK
  0
  0
-@@ -242,9 +242,9 @@ f2 ()
+@@ -139,8 +139,8 @@ abc
+ def
+ ghi
+ ok
+-./source8.sub: line 40: improbable-filename: No such file or directory
+-./source8.sub: line 41: improbable-filename: No such file or directory
++./source8.sub: line 40: improbable-filename: EDC5129I No such file or directory
++./source8.sub: line 41: improbable-filename: EDC5129I No such file or directory
+ an improbable filename
+ an improbable filename
+ an improbable filename
+@@ -261,9 +261,9 @@ f2 ()
  funcs unset:
  one-two
  two-two
@@ -26,7 +37,7 @@ index 4f51d43..0a91d67 100644
  two
  bash: line 1: .: notthere: file not found
  one
-@@ -264,9 +264,9 @@ four
+@@ -283,9 +283,9 @@ four
  ./builtins7.sub: line 19: : command not found
  127
  0
@@ -38,3 +49,19 @@ index 4f51d43..0a91d67 100644
  after 2
  type is a shell builtin
  + command -v type
+@@ -325,13 +325,13 @@ builtin hash -p /nosuchdir/nosuchfile cat
+ ./builtins9.sub: line 32: hash: notthere: not found
+ ./builtins9.sub: line 33: hash: notthere: not found
+ 1
+-./builtins9.sub: line 40: /nosuchdir/nosuchfile: No such file or directory
++./builtins9.sub: line 40: /nosuchdir/nosuchfile: EDC5129I No such file or directory
+ 127
+ /nosuchdir/nosuchfile
+ 0
+ 0
+ found
+-./builtins9.sub: line 52: hash: /: Is a directory
++./builtins9.sub: line 52: hash: /: EDC5123I Is a directory
+ builtin hash -p /nosuchfile cat
+ ./builtins10.sub: line 17: help: -x: invalid option
+ help: usage: help [-dms] [pattern ...]
