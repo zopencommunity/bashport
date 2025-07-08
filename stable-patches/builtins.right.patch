@@ -1,0 +1,31 @@
+diff --git a/tests/builtins.right b/tests/builtins.right
+index d708c18..c81a28a 100644
+--- a/tests/builtins.right
++++ b/tests/builtins.right
+@@ -345,7 +345,7 @@ A star (*) next to a name means that the command is disabled.
+  ! PIPELINE                              history [-c] [-d offset] [n] or hist>
+  job_spec [&]                            if COMMANDS; then COMMANDS; [ elif C>
+  (( expression ))                        jobs [-lnprs] [jobspec ...] or jobs >
+- . [-p path] filename [arguments]        kill [-s sigspec | -n signum | -sigs>
++ . [-p path] filename [arguments]        kill [-s sigspec | -n signum | -K | >
+  :                                       let arg [arg ...]
+  [ arg... ]                              local [option] name[=value] ...
+  [[ expression ]]                        logout [n]
+@@ -362,7 +362,7 @@ A star (*) next to a name means that the command is disabled.
+  complete [-abcdefgjksuv] [-pr] [-DEI]>  set [-abefhkmnptuvxBCEHPT] [-o optio>
+  compopt [-o|+o option] [-DEI] [name .>  shift [n]
+  continue [n]                            shopt [-pqsu] [-o] [optname ...]
+- coproc [NAME] command [redirections]    source [-p path] filename [argument>
++ coproc [NAME] command [redirections]    source [-p path] filename [arguments>
+  declare [-aAfFgiIlnrtux] [name[=value>  suspend [-f]
+  dirs [-clpv] [+N] [-N]                  test [expr]
+  disown [-h] [-ar] [jobspec ... | pid >  time [-p] pipeline
+@@ -438,7 +438,7 @@ A star (*) next to a name means that the command is disabled.
+  ! PIPELINE                              history [-c] [-d offset] [n] or hist>
+  job_spec [&]                            if COMMANDS; then COMMANDS; [ elif C>
+  (( expression ))                        jobs [-lnprs] [jobspec ...] or jobs >
+- . [-p path] filename [arguments]        kill [-s sigspec | -n signum | -sigs>
++ . [-p path] filename [arguments]        kill [-s sigspec | -n signum | -K | >
+  :                                       let arg [arg ...]
+  [ arg... ]                              local [option] name[=value] ...
+  [[ expression ]]                        logout [n]

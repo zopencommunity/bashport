@@ -311,15 +311,11 @@ index 4cfc592..167a451 100644
 -diff ${BASH_TSTOUT} getopts.right && rm -f ${BASH_TSTOUT}
 +diff ${BASH_TSTOUT} getopts.right | tee getopts.output && rm -f ${BASH_TSTOUT}
 diff --git a/tests/run-glob-test b/tests/run-glob-test
-index 246501c..89dd712 100644
+index 246501c..13979e4 100644
 --- a/tests/run-glob-test
 +++ b/tests/run-glob-test
-@@ -1,7 +1,7 @@
- PATH=$PATH:`pwd`
- export PATH
- 
--( diff -a glob.right glob.right >/dev/null 2>&1 ) && AFLAG=-a
-+( diff -a glob.right | tee glob.output glob.right >/dev/null 2>&1 ) && AFLAG=-a
+@@ -4,4 +4,4 @@ export PATH
+ ( diff -a glob.right glob.right >/dev/null 2>&1 ) && AFLAG=-a
  
  ${THIS_SH} ./glob.tests > ${BASH_TSTOUT} 2>&1
 -diff ${AFLAG} ${BASH_TSTOUT} glob.right && rm -f ${BASH_TSTOUT}
