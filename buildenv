@@ -1,9 +1,9 @@
 # bump: bash-version /BASH_VERSION="(.*)"/ https://ftp.gnu.org/gnu/bash/|re:/href="bash-([\d.]+).tar.gz"/$1/|semver:*
-BASH_VERSION="5.2.37"
+BASH_VERSION="5.3"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_CATEGORIES="shell"
-export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage"
+export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage util-linux"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
 export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext zusage"
@@ -14,6 +14,10 @@ export ZOPEN_COMP=CLANG
 
 export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv2r5 -march=z13"
 export ZOPEN_SYSTEM_PREREQS="zos25"
+
+export ZOPEN_CHECK="zopen_check"
+export ZOPEN_CHECK_OPTS=""
+export ZOPEN_CHECK_MINIMAL="yes"
 
 zopen_init()
 {
@@ -28,6 +32,11 @@ zopen_post_buildenv()
     export ZOPEN_CHECK_OPTS="-j\$ZOPEN_NUM_JOBS check LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
     export ZOPEN_INSTALL_OPTS="-j\$ZOPEN_NUM_JOBS install LOCAL_LIBS=\"\$LIBS\" LIBS_FOR_BUILD=\"\$LIBS\""
   fi
+}
+
+zopen_check()
+{
+  ZOSLIB_ERROR_COMPAT=1 make check
 }
 
 zopen_check_results()

@@ -1,0 +1,18 @@
+diff --git a/tests/errors.right b/tests/errors.right
+index f46ebb1..1c33eee 100644
+--- a/tests/errors.right
++++ b/tests/errors.right
+@@ -123,11 +123,11 @@ builtin: usage: builtin [shell-builtin [arg ...]]
+ ./errors.tests: line 315: builtin: bash: not a shell builtin
+ ./errors.tests: line 319: bg: no job control
+ ./errors.tests: line 320: fg: no job control
+-kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
++kill: usage: kill [-s sigspec | -n signum | -K | -sigspec] pid | jobspec ... or kill -l [sigspec]
+ ./errors.tests: line 324: kill: -s: option requires an argument
+ ./errors.tests: line 326: kill: S: invalid signal specification
+ ./errors.tests: line 328: kill: `': not a pid or valid job spec
+-kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
++kill: usage: kill [-s sigspec | -n signum | -K | -sigspec] pid | jobspec ... or kill -l [sigspec]
+ ./errors.tests: line 332: kill: SIGBAD: invalid signal specification
+ ./errors.tests: line 334: kill: BAD: invalid signal specification
+ ./errors.tests: line 336: kill: `@12': not a pid or valid job spec

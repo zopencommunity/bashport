@@ -1,8 +1,8 @@
 diff --git a/lib/intl/gettextP.h b/lib/intl/gettextP.h
-index 5c137e5..9a9d840 100644
+index fc21582..8e262d9 100644
 --- a/lib/intl/gettextP.h
 +++ b/lib/intl/gettextP.h
-@@ -77,6 +77,9 @@ SWAP (i)
+@@ -119,6 +119,9 @@ SWAP (nls_uint32 i)
  }
  #endif
  
@@ -12,42 +12,14 @@ index 5c137e5..9a9d840 100644
  
  /* In-memory representation of system dependent string.  */
  struct sysdep_string_desc
-@@ -169,6 +172,10 @@ struct loaded_l10nfile *_nl_find_domain PARAMS ((const char *__dirname,
- 						 const char *__domainname,
- 					      struct binding *__domainbinding))
+@@ -262,6 +265,10 @@ struct loaded_l10nfile *_nl_find_domain (const char *__dirname,
+ 					 const char *__domainname,
+ 					 struct binding *__domainbinding)
       internal_function;
 +
 +#ifdef __MVS__
 +#define __locale 1
 +#endif
- void _nl_load_domain PARAMS ((struct loaded_l10nfile *__domain,
- 			      struct binding *__domainbinding))
+ void _nl_load_domain (struct loaded_l10nfile *__domain,
+ 		      struct binding *__domainbinding)
       internal_function;
-diff --git a/print_cmd.c b/print_cmd.c
-index eef9bb6..a6a15b8 100644
---- a/print_cmd.c
-+++ b/print_cmd.c
-@@ -59,8 +59,8 @@ static int indentation_amount = 4;
- #if defined (PREFER_STDARG)
- typedef void PFUNC PARAMS((const char *, ...));
- 
--static void cprintf PARAMS((const char *, ...))  __attribute__((__format__ (printf, 1, 2)));
--static void xprintf PARAMS((const char *, ...))  __attribute__((__format__ (printf, 1, 2)));
-+static void cprintf (const char *control, ...);
-+static void xprintf (const char *, ...);
- #else
- #define PFUNC VFunction
- static void cprintf ();
-diff --git a/shell.c b/shell.c
-index ee9d445..d9b1c50 100644
---- a/shell.c
-+++ b/shell.c
-@@ -379,7 +379,7 @@ main (argc, argv, env)
- #endif
-   volatile int locally_skip_execution;
-   volatile int arg_index, top_level_arg_index;
--#ifdef __OPENNT
-+#if defined(__OPENNT) || defined(__MVS__)
-   char **env;
- 
-   env = environ;

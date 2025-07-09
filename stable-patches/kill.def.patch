@@ -1,5 +1,5 @@
 diff --git a/builtins/kill.def b/builtins/kill.def
-index c655092..ae4e1c8 100644
+index 66ed752..d410cc6 100644
 --- a/builtins/kill.def
 +++ b/builtins/kill.def
 @@ -22,7 +22,7 @@ $PRODUCES kill.c
@@ -29,17 +29,17 @@ index c655092..ae4e1c8 100644
 @@ -71,6 +73,7 @@ extern int errno;
  #endif /* !errno */
  
- static void kill_error PARAMS((pid_t, int));
+ static void kill_error (pid_t, int);
 +static void kill_error2 PARAMS((pid_t, int, int));
  
  #if !defined (CONTINUE_AFTER_KILL_ERROR)
  #  define CONTINUE_OR_FAIL return (EXECUTION_FAILURE)
-@@ -85,11 +88,13 @@ int
- kill_builtin (list)
-      WORD_LIST *list;
+@@ -84,11 +87,13 @@ static void kill_error (pid_t, int);
+ int
+ kill_builtin (WORD_LIST *list)
  {
--  int sig, any_succeeded, listing, saw_signal, dflags;
-+  int sig, any_succeeded, listing, saw_signal, dflags, superkill_flag;
+-  int sig, any_succeeded, any_failed, listing, saw_signal, dflags;
++  int sig, any_succeeded, any_failed, listing, saw_signal, dflags, superkill_flag;
    char *sigspec, *word;
    pid_t pid;
    intmax_t pid_value;
@@ -49,7 +49,7 @@ index c655092..ae4e1c8 100644
    if (list == 0)
      {
        builtin_usage ();
-@@ -112,6 +117,12 @@ kill_builtin (list)
+@@ -111,6 +116,12 @@ kill_builtin (WORD_LIST *list)
  	  listing++;
  	  list = list->next;
  	}
@@ -62,7 +62,7 @@ index c655092..ae4e1c8 100644
        else if (ISOPTION (word, 's') || ISOPTION (word, 'n'))
  	{
  	  list = list->next;
-@@ -194,7 +205,16 @@ use_sigspec:
+@@ -193,7 +204,16 @@ use_sigspec:
  	{
  	  pid = (pid_t) pid_value;
  
@@ -80,7 +80,7 @@ index c655092..ae4e1c8 100644
  	    {
  	      if (errno == EINVAL)
  		sh_invalidsig (sigspec);
-@@ -238,7 +258,17 @@ use_sigspec:
+@@ -242,7 +262,17 @@ use_sigspec:
  
  	  UNBLOCK_CHILD (oset);
  
@@ -99,7 +99,7 @@ index c655092..ae4e1c8 100644
  	    {
  	      if (errno == EINVAL)
  		sh_invalidsig (sigspec);
-@@ -274,3 +304,21 @@ kill_error (pid, e)
+@@ -280,3 +310,21 @@ kill_error (pid_t pid, int e)
      x = _("Unknown error");
    builtin_error ("(%ld) - %s", (long)pid, x);
  }

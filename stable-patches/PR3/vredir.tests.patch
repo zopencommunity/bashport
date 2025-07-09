@@ -1,10 +1,10 @@
 diff --git a/tests/vredir.tests b/tests/vredir.tests
-index bd4cb77..09b5723 100644
+index f2c5e4d..af489ac 100644
 --- a/tests/vredir.tests
 +++ b/tests/vredir.tests
-@@ -35,9 +35,9 @@ exec {v}>&-
- readonly v=42
+@@ -37,9 +37,9 @@ readonly v=42
  bar
+ exec {v}>&1
  
 -echo foo 1 2>&1 >&$v | { grep -q '\$v: Bad' || echo 'bad foo 1'; }
 -echo foo 2 2>&1 >&$v | { grep -q '\$v: Bad' || echo 'bad foo 2'; }

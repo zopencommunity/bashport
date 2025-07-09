@@ -1,13 +1,13 @@
 diff --git a/tests/heredoc.right b/tests/heredoc.right
-index cc193f6..1abd8e4 100644
+index 214ef52..e3fa3e2 100644
 --- a/tests/heredoc.right
 +++ b/tests/heredoc.right
-@@ -126,7 +126,7 @@ foo bar
+@@ -130,7 +130,7 @@ foo bar
  ./heredoc7.sub: line 29: warning: here-document at line 29 delimited by end-of-file (wanted `EOF')
- ./heredoc7.sub: line 29: foobar: command not found
- ./heredoc7.sub: line 30: EOF: command not found
+ ./heredoc7.sub: line 26: foobar: command not found
+ ./heredoc7.sub: line 27: EOF: command not found
 -grep: *.c: No such file or directory
 +grep: FSUM6003 input file "*.c": EDC5129I No such file or directory.
- comsub here-string
- ./heredoc.tests: line 156: warning: here-document at line 154 delimited by end-of-file (wanted `EOF')
- hi
+ foo () 
+ { 
+     echo begin;
