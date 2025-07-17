@@ -36,7 +36,7 @@ zopen_post_buildenv()
 
 zopen_check()
 {
-  ZOSLIB_ERROR_COMPAT=1 make check
+  ZOSLIB_ERROR_COMPAT=1 _EDC_ADD_ERRNO2=0 make check
 }
 
 zopen_check_results()
