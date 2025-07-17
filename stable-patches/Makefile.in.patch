@@ -1,8 +1,8 @@
 diff --git a/Makefile.in b/Makefile.in
-index 0b4df73..62c946e 100644
+index c4a882f..4d13209 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -145,7 +145,7 @@ LOCALE_DEFS = -DLOCALEDIR='"$(localedir)"' -DPACKAGE='"$(PACKAGE)"'
+@@ -146,7 +146,7 @@ LOCALE_DEFS = -DLOCALEDIR='"$(localedir)"' -DPACKAGE='"$(PACKAGE)"'
  
  LOCAL_LIBS = @LOCAL_LIBS@
  LIBS = $(BUILTINS_LIB) $(LIBRARIES) @LIBS@
@@ -11,3 +11,17 @@ index 0b4df73..62c946e 100644
  
  STATIC_LD = @STATIC_LD@
  LOCAL_LDFLAGS = @LOCAL_LDFLAGS@
+@@ -1077,9 +1077,10 @@ xcase$(EXEEXT):	$(SUPPORT_SRC)xcase.c
+ 	@$(CC_FOR_BUILD) $(CCFLAGS_FOR_BUILD) ${LDFLAGS_FOR_BUILD} -o $@ $(SUPPORT_SRC)xcase.c ${LIBS_FOR_BUILD}
+ 
+ test tests check:	force $(Program) $(TESTS_SUPPORT)
+-	@-test -d tests || mkdir tests
+-	@cp $(TESTS_SUPPORT) tests
+-	@( cd $(srcdir)/tests && \
++	trap
++	test -d tests || mkdir tests
++	cp $(TESTS_SUPPORT) tests
++	( cd $(srcdir)/tests && \
+ 		BUILD_DIR=$(BUILD_DIR) PATH=$(BUILD_DIR)/tests:$$PATH THIS_SH=$(THIS_SH) $(SHELL) ${TESTSCRIPT} )
+ 
+ symlinks:
