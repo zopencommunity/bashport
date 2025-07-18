@@ -22,6 +22,7 @@ export ZOPEN_CHECK_MINIMAL="yes"
 zopen_init()
 {
   cp ../stdlib.h .
+  ls -la /dev/
 }
 
 zopen_post_buildenv()
