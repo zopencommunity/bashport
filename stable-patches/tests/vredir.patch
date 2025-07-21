@@ -1,5 +1,5 @@
 diff --git a/tests/vredir.right b/tests/vredir.right
-index d0a76a4..9f1d1fa 100644
+index d0a76a4..6ff0514 100644
 --- a/tests/vredir.right
 +++ b/tests/vredir.right
 @@ -103,10 +103,6 @@ swizzle ()
@@ -13,6 +13,14 @@ index d0a76a4..9f1d1fa 100644
  12 10
  a
  a
+@@ -119,5 +115,5 @@ swizzle ()
+     exec {stdout}>&${fd[1]}-
+ }
+ redir 2
+-./vredir8.sub: line 33: $fd: Bad file descriptor
+-./vredir8.sub: line 38: $fd: Bad file descriptor
++./vredir8.sub: line 37: $fd: Bad file descriptor
++./vredir8.sub: line 42: $fd: Bad file descriptor
 diff --git a/tests/vredir.tests b/tests/vredir.tests
 index f2c5e4d..0503b36 100644
 --- a/tests/vredir.tests
@@ -26,3 +34,20 @@ index f2c5e4d..0503b36 100644
  
  ${THIS_SH} ./vredir7.sub
  ${THIS_SH} ./vredir8.sub
+diff --git a/tests/vredir8.sub b/tests/vredir8.sub
+index 804626d..fa507f9 100644
+--- a/tests/vredir8.sub
++++ b/tests/vredir8.sub
+@@ -27,7 +27,11 @@ exec {fd}>&-
+ 
+ shopt -s varredir_close
+ 
+-: {fd}<>/dev/tty
++if test -t 0 2>/dev/null; then
++  : {fd}<>/dev/tty
++else
++  : {fd}<>/dev/null
++fi
+ 
+ # these should fail with Bad file descriptor errors
+ echo redir 3 >&$fd
