@@ -3,7 +3,7 @@ BASH_VERSION="5.3"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_CATEGORIES="shell"
-export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage util-linux"
+export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage util-linux readline"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
 export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext zusage"
@@ -18,6 +18,9 @@ export ZOPEN_SYSTEM_PREREQS="zos25"
 export ZOPEN_CHECK="zopen_check"
 export ZOPEN_CHECK_OPTS=""
 export ZOPEN_CHECK_MINIMAL="yes"
+export ZOPEN_CHECK_TIMEOUT="${ZOPEN_CHECK_NO_TIMEOUT}"
+
+export ZOPEN_EXTRA_CONFIGURE_OPTS="--with-installed-readline=\${READLINE_HOME}"
 
 zopen_init()
 {
