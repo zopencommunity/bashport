@@ -1,29 +1,13 @@
-diff --git a/tests/varenv.right b/tests/varenv.right
-index 4ed1e04..639a9f3 100644
---- a/tests/varenv.right
-+++ b/tests/varenv.right
-@@ -174,7 +174,6 @@ after bar: var=global
- ./varenv13.sub: line 16: `var[@]': not a valid identifier
- ./varenv13.sub: line 14: declare: var: not found
- declare -A var=([0]="X" ["@"]="Y" )
--help
- ./varenv13.sub: line 35: `var[0]': not a valid identifier
- 1
- declare -A var=([0]="X" )
-@@ -277,12 +276,16 @@ ignoreeof           	on
- local -
- match 1
- trap -- 'echo trap:$FUNCNAME' EXIT
-+trap -- '' SIGIOERR
- trap:f
- trap -- 'echo trap:$FUNCNAME' EXIT
-+trap -- '' SIGIOERR
- trap:f
- trap -- 'echo trap:$FUNCNAME' EXIT
-+trap -- '' SIGIOERR
- trap:f
- trap -- 'echo trap:$FUNCNAME' EXIT
-+trap -- '' SIGIOERR
- trap:f
- declare -rx x="4"
- declare -rx y="5"
+diff --git a/tests/varenv13.sub b/tests/varenv13.sub
+index 1fa7d5b..0c93962 100644
+--- a/tests/varenv13.sub
++++ b/tests/varenv13.sub
+@@ -27,7 +27,7 @@ var[0]=X var[@]=Y
+ f
+ 
+ : ${THIS_SH:=./bash}
+-env 'v[0]=help' ${THIS_SH} -c 'printenv "v[0]"'
++/bin/env 'v[0]=help' ${THIS_SH} -c 'printenv "v[0]"'
+ 
+ unset -v var
+ 
