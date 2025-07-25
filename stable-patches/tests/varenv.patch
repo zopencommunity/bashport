@@ -1,0 +1,13 @@
+diff --git a/tests/varenv13.sub b/tests/varenv13.sub
+index 1fa7d5b..0c93962 100644
+--- a/tests/varenv13.sub
++++ b/tests/varenv13.sub
+@@ -27,7 +27,7 @@ var[0]=X var[@]=Y
+ f
+ 
+ : ${THIS_SH:=./bash}
+-env 'v[0]=help' ${THIS_SH} -c 'printenv "v[0]"'
++/bin/env 'v[0]=help' ${THIS_SH} -c 'printenv "v[0]"'
+ 
+ unset -v var
+ 

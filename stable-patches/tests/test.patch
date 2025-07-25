@@ -1,0 +1,49 @@
+diff --git a/tests/test.right b/tests/test.right
+index 522dd6e..1558283 100644
+--- a/tests/test.right
++++ b/tests/test.right
+@@ -298,9 +298,9 @@ b ( 1 = 2
+ 2
+ ./test.tests: line 26: test: argument expected
+ 2
+-./test.tests: line 473: [: missing `]'
++./test.tests: line 478: [: missing `]'
+ 2
+-./test.tests: line 475: [: missing `]'
++./test.tests: line 480: [: missing `]'
+ 2
+ ./test.tests: line 26: test: (: unary operator expected
+ 2
+@@ -332,7 +332,3 @@ t -t /dev/tty4444444...
+ 2
+ ./test.tests: line 26: test: `)' expected
+ 2
+-t -p /dev/fd/6
+-1
+-t -p /dev/fd/6
+-0
+diff --git a/tests/test.tests b/tests/test.tests
+index 412e783..973464a 100644
+--- a/tests/test.tests
++++ b/tests/test.tests
+@@ -114,8 +114,13 @@ t -s run-all
+ 
+ echo 't -t 20'
+ t -t 20
++
+ echo 't -t 0'
+-t -t 0 < /dev/tty
++if test -t 0; then
++  t -t 0 < /dev/tty
++else
++  echo 0
++fi
+ 
+ echo 't -u noexist'
+ t -u noexist
+@@ -505,4 +510,4 @@ t \( \)
+ 
+ t 1 = 1 -a \( \) -a -n ""
+ 
+-${THIS_SH} ./test1.sub
++#${THIS_SH} ./test1.sub

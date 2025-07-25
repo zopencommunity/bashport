@@ -1,5 +1,5 @@
 diff --git a/tests/trap.right b/tests/trap.right
-index 4338ff4..25bd782 100644
+index 40c51dd..7098508 100644
 --- a/tests/trap.right
 +++ b/tests/trap.right
 @@ -2,18 +2,18 @@ subshell exit
