@@ -1,0 +1,73 @@
+diff --git i/variables.c w/variables.c
+index 4e6f93b..a37e258 100644
+--- i/variables.c
++++ w/variables.c
+@@ -36,6 +36,10 @@
+ #  include <unistd.h>
+ #endif
+ 
++#if defined (__MVS__)
++#  include <_Nascii.h>
++#endif
++
+ #include <stdio.h>
+ #include "chartypes.h"
+ #if defined (HAVE_PWD_H)
+@@ -5757,6 +5761,9 @@ struct name_and_function {
+ };
+ 
+ static struct name_and_function special_vars[] = {
++#if defined (__MVS__)
++  { "_BPXK_AUTOCVT", sv_bpxk_autocvt },
++#endif
+   { "BASH_COMPAT", sv_shcompat },
+   { "BASH_XTRACEFD", sv_xtracefd },
+ 
+@@ -5978,6 +5985,32 @@ sv_globsort (const char *name)
+   setup_globsort (name);
+ }
+ 
++#if defined (__MVS__)
++/* What to do when _BPXK_AUTOCVT changes. */
++void
++sv_bpxk_autocvt (const char *name)
++{
++  SHELL_VAR *v;
++  char *value;
++
++  v = find_variable (name);
++  if (v == 0 || value_cell (v) == 0)
++    {
++      /* Let's leave it at the current state for now */
++      //__ae_autoconvert_state(_CVTSTATE_OFF);
++      return;
++    }
++
++  value = value_cell (v);
++  if (strcmp(value, "ON") == 0)
++    __ae_autoconvert_state(_CVTSTATE_ON);
++  else if (strcmp(value, "ALL") == 0)
++    __ae_autoconvert_state(_CVTSTATE_ALL);
++  else if (strcmp(value, "OFF") == 0)
++    __ae_autoconvert_state(_CVTSTATE_OFF);
++}
++#endif
++
+ #if defined (READLINE)
+ void
+ sv_comp_wordbreaks (const char *name)
+diff --git i/variables.h w/variables.h
+index e939e59..719d5ac 100644
+--- i/variables.h
++++ w/variables.h
+@@ -454,6 +454,10 @@ extern void sv_xtracefd (const char *);
+ extern void sv_shcompat (const char *);
+ extern void sv_globsort (const char *);
+ 
++#if defined (__MVS__)
++extern void sv_bpxk_autocvt (const char *);
++#endif
++
+ #if defined (READLINE)
+ extern void sv_comp_wordbreaks (const char *);
+ extern void sv_terminal (const char *);
