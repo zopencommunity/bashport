@@ -3,7 +3,7 @@ BASH_VERSION="5.3"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_CATEGORIES="shell"
-export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage util-linux readline"
+export ZOPEN_STABLE_DEPS="curl gzip tar make zoslib coreutils diffutils sed ncurses grep gettext zusage util-linux readline patch"
 
 export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
 export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext zusage"
@@ -22,9 +22,40 @@ export ZOPEN_CHECK_TIMEOUT="${ZOPEN_CHECK_NO_TIMEOUT}"
 
 export ZOPEN_EXTRA_CONFIGURE_OPTS="--with-installed-readline=\${READLINE_HOME}"
 
-zopen_init()
+zopen_post_extract()
 {
-  cp ../stdlib.h .
+  # Download and apply official bash patches
+  src_dir="$1"
+  original_dir=$(pwd)
+
+  cp rename_builtins_header.sh $src_dir
+  cd "${src_dir}" || return 1
+
+  major_minor=$(echo "${BASH_VERSION}" | cut -d. -f1,2 | tr -d '.')
+  patches_url="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}-patches"
+
+  echo "Checking for bash patches at ${patches_url}..."
+
+  # Try to fetch the patches directory listing
+  patches_list=$(curl -s "${patches_url}/" | grep -o "bash${major_minor}-[0-9]\{3\}" | sort -u)
+
+  if [ -n "${patches_list}" ]; then
+    echo "Found patches, downloading and applying..."
+    for patch_name in ${patches_list}; do
+      echo "Applying ${patch_name}..."
+      curl -s "${patches_url}/${patch_name}" | patch -p0 -s
+      if [ $? -ne 0 ]; then
+        echo "Warning: Failed to apply ${patch_name}"
+      fi
+    done
+    echo "Finished applying patches"
+  else
+    echo "No patches found for bash ${BASH_VERSION}"
+  fi
+
+  /bin/sh rename_builtins_header.sh
+  rm rename_builtins_header.sh
+  cd "${original_dir}"
 }
 
 zopen_post_buildenv()
