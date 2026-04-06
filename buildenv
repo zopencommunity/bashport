@@ -9,7 +9,7 @@ export ZOPEN_DEV_URL="https://github.com/bminor/bash.git"
 export ZOPEN_DEV_DEPS="perl m4 autoconf curl gzip tar make zoslib coreutils diffutils sed ncurses bison grep gettext zusage"
 export ZOPEN_DEV_BRANCH="devel"
 
-export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DSSH_SOURCE_BASHRC=1 -DSYS_BASHRC='\\\"/etc/bashrc\\\"' -DNON_INTERACTIVE_LOGIN_SHELLS=1"
+export ZOPEN_EXTRA_CPPFLAGS="-DNO_MAIN_ENV_ARG=1 -DSSH_SOURCE_BASHRC=1 -DSYS_BASHRC='\\\"/etc/bashrc\\\"' -DNON_INTERACTIVE_LOGIN_SHELLS=1 -DENABLE_RBASH=0"
 export ZOPEN_COMP=CLANG
 
 export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv2r5 -march=z13"
@@ -108,4 +108,11 @@ EOF
 
 zopen_get_version() {
   ./bash --version | head -1 | awk -F" " '{print $4}' | awk -F"(" '{print $1}'
+}
+
+zopen_post_install() {
+  if [ -n "{$ENABLE_RBASH}" ]; then
+    echo "enable rbash"
+    ln -s bash rbash
+  fi
 }
