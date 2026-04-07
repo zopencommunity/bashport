@@ -21,7 +21,7 @@ export ZOPEN_CHECK_MINIMAL="yes"
 export ZOPEN_CHECK_TIMEOUT="${ZOPEN_CHECK_NO_TIMEOUT}"
 
 export ZOPEN_EXTRA_CONFIGURE_OPTS="--with-installed-readline=\${READLINE_HOME}"
-export ENABLE_RBASH=1
+export ENABLE_RBASH=0
 
 zopen_post_extract()
 {
