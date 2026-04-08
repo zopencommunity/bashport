@@ -112,5 +112,5 @@ zopen_get_version() {
 
 zopen_post_install() {
   echo "enable rbash"
-  ln -s "$1/bin/bash" "$1/bin/rbash"
+  ln -s bash "$1/bin/rbash"
 }
