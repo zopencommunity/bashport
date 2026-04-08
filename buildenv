@@ -21,7 +21,6 @@ export ZOPEN_CHECK_MINIMAL="yes"
 export ZOPEN_CHECK_TIMEOUT="${ZOPEN_CHECK_NO_TIMEOUT}"
 
 export ZOPEN_EXTRA_CONFIGURE_OPTS="--with-installed-readline=\${READLINE_HOME}"
-export ENABLE_RBASH=0
 
 zopen_post_extract()
 {
@@ -112,8 +111,6 @@ zopen_get_version() {
 }
 
 zopen_post_install() {
-  if [ -n "{$ENABLE_RBASH}" ]; then
-    echo "enable rbash"
-    ln -s bash rbash
-  fi
+  echo "enable rbash"
+  ln -s "$1/bin/bash" "$1/bin/rbash"
 }
