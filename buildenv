@@ -109,3 +109,8 @@ EOF
 zopen_get_version() {
   ./bash --version | head -1 | awk -F" " '{print $4}' | awk -F"(" '{print $1}'
 }
+
+zopen_post_install() {
+  echo "enable rbash"
+  ln -s bash "$1/bin/rbash"
+}
