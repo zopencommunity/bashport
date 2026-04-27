@@ -1,0 +1,141 @@
+diff --git a/tests/rbash.tests b/tests/rbash.tests
+new file mode 100644
+index 0000000..a9c88cc
+--- /dev/null
++++ b/tests/rbash.tests
+@@ -0,0 +1,86 @@
++#!/bin/bash
++#
++# test_rbash.sh - Simple test script for restricted bash (rbash)
++#
++# This script tests basic rbash restrictions to verify the bashport
++# implementation is working correctly.
++#
++
++echo "=== Restricted Bash (rbash) Test Suite ==="
++echo ""
++
++PASSED=0
++FAILED=0
++
++# Helper function to test a restriction
++test_restriction() {
++    local test_name="$1"
++    local command="$2"
++    
++    echo "Testing: $test_name"
++    
++    # Run command in rbash and capture exit code
++    rbash -c "$command" 2>/dev/null
++    local exit_code=$?
++    
++    # For restricted operations, we expect non-zero exit code
++    if [ $exit_code -ne 0 ]; then
++        echo "  â PASS: Command properly restricted (exit code: $exit_code)"
++        ((PASSED++))
++    else
++        echo "  â FAIL: Command should have been restricted but succeeded"
++        ((FAILED++))
++    fi
++    echo ""
++}
++
++# Test 1: Cannot change directory
++test_restriction "cd restriction" "cd /tmp"
++
++# Test 2: Cannot modify PATH
++test_restriction "PATH modification" "PATH=/bin:/usr/bin"
++
++# Test 3: Cannot use commands with absolute path
++test_restriction "command with /" "/bin/ls"
++
++# Test 4: Cannot redirect output
++test_restriction "output redirection" "echo test > /tmp/test.txt"
++
++# Test 5: Cannot use exec builtin
++test_restriction "exec builtin" "exec ls"
++
++# Test 6: Cannot modify SHELL variable
++test_restriction "SHELL modification" "SHELL=/bin/sh"
++
++# Test 7: Cannot modify ENV variable
++test_restriction "ENV modification" "ENV=/tmp/env"
++
++# Test 8: Cannot modify BASH_ENV variable
++test_restriction "BASH_ENV modification" "BASH_ENV=/tmp/bashenv"
++
++# Test 9: Allowed operation - simple echo should work
++echo "Testing: allowed operation (echo)"
++rbash -c "echo 'Hello from rbash'" >/dev/null 2>&1
++if [ $? -eq 0 ]; then
++    echo "  â PASS: Allowed command works correctly"
++    ((PASSED++))
++else
++    echo "  â FAIL: Allowed command failed"
++    ((FAILED++))
++fi
++echo ""
++
++# Summary
++echo "=== Test Summary ==="
++echo "Total tests: $((PASSED + FAILED))"
++echo "Passed: $PASSED"
++echo "Failed: $FAILED"
++echo ""
++
++if [ $FAILED -eq 0 ]; then
++    echo "â All rbash restriction tests passed!"
++    exit 0
++else
++    echo "â Some rbash restriction tests failed!"
++    exit 1
++fi
+diff --git a/tests/rbash.right b/tests/rbash.right
+new file mode 100644
+index 0000000..e831f1d
+--- /dev/null
++++ b/tests/rbash.right
+@@ -0,0 +1,35 @@
++=== Restricted Bash (rbash) Test Suite ===
++
++Testing: cd restriction
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: PATH modification
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: command with /
++  â PASS: Command properly restricted (exit code: 127)
++
++Testing: output redirection
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: exec builtin
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: SHELL modification
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: ENV modification
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: BASH_ENV modification
++  â PASS: Command properly restricted (exit code: 1)
++
++Testing: allowed operation (echo)
++  â PASS: Allowed command works correctly
++
++=== Test Summary ===
++Total tests: 9
++Passed: 9
++Failed: 0
++
++â All rbash restriction tests passed!
+diff --git a/tests/run-rbash b/tests/run-rbash
+new file mode 100644
+index 0000000..f80b7f2
+--- /dev/null
++++ b/tests/run-rbash
+@@ -0,0 +1,2 @@
++${THIS_SH} ./rbash.tests > ${BASH_TSTOUT} 2>&1
++diff ${BASH_TSTOUT} rbash.right | tee rbash.output && rm -f ${BASH_TSTOUT}
