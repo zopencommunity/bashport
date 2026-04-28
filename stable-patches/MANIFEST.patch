@@ -6,8 +6,8 @@ index 985d179..2a1cd25 100644
  tests/quotearray3.sub	f
  tests/quotearray4.sub	f
  tests/quotearray5.sub	f
-+tests/rbash.tests       f
-+tests/rbash.right       f
++tests/rbash.tests	f
++tests/rbash.right	f
  tests/read.tests	f
  tests/read.right	f
  tests/read1.sub		f
@@ -15,7 +15,7 @@ index 985d179..2a1cd25 100644
  tests/run-procsub	f
  tests/run-quote		f
  tests/run-quotearray	f
-+tests/run-rbash         f
++tests/run-rbash	f
  tests/run-read		f
  tests/run-redir		f
  tests/run-rhs-exp	f
