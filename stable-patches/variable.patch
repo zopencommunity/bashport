@@ -1,7 +1,7 @@
-diff --git i/variables.c w/variables.c
-index 4e6f93b..a37e258 100644
---- i/variables.c
-+++ w/variables.c
+diff --git a/variables.c b/variables.c
+index 4e6f93b..77193b7 100644
+--- a/variables.c
++++ b/variables.c
 @@ -36,6 +36,10 @@
  #  include <unistd.h>
  #endif
@@ -25,7 +25,7 @@ index 4e6f93b..a37e258 100644
    { "BASH_COMPAT", sv_shcompat },
    { "BASH_XTRACEFD", sv_xtracefd },
  
-@@ -5978,6 +5987,76 @@ sv_globsort (const char *name)
+@@ -5978,6 +5987,78 @@ sv_globsort (const char *name)
    setup_globsort (name);
  }
  
@@ -104,11 +104,11 @@ index 4e6f93b..a37e258 100644
  #if defined (READLINE)
  void
  sv_comp_wordbreaks (const char *name)
-diff --git i/variables.h w/variables.h
-index e939e59..719d5ac 100644
---- i/variables.h
-+++ w/variables.h
-@@ -454,6 +454,11 @@ extern void sv_xtracefd (const char *);
+diff --git a/variables.h b/variables.h
+index e939e59..304ed3f 100644
+--- a/variables.h
++++ b/variables.h
+@@ -454,6 +454,12 @@ extern void sv_xtracefd (const char *);
  extern void sv_shcompat (const char *);
  extern void sv_globsort (const char *);
  
