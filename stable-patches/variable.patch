@@ -1,5 +1,5 @@
 diff --git a/variables.c b/variables.c
-index 4e6f93b..77193b7 100644
+index 4e6f93b..5bf5db5 100644
 --- a/variables.c
 +++ b/variables.c
 @@ -36,6 +36,10 @@
@@ -25,7 +25,7 @@ index 4e6f93b..77193b7 100644
    { "BASH_COMPAT", sv_shcompat },
    { "BASH_XTRACEFD", sv_xtracefd },
  
-@@ -5978,6 +5987,78 @@ sv_globsort (const char *name)
+@@ -5978,6 +5987,76 @@ sv_globsort (const char *name)
    setup_globsort (name);
  }
  
@@ -64,17 +64,16 @@ index 4e6f93b..77193b7 100644
 +  v = find_variable (name);
 +  if (v == 0 || value_cell (v) == 0)
 +    {
-+      /* Unset the environment variable to use system default */
-+      unsetenv("_ENCODE_FILE_NEW");
++      /* Unbind the variable using Bash's internal function */
++      unbind_variable("_ENCODE_FILE_NEW");
 +      return;
 +    }
 +
 +  value = value_cell (v);
-+  /* Set the environment variable for child processes and file operations */
-+  if (setenv("_ENCODE_FILE_NEW", value, 1) != 0)
-+    {
-+      internal_warning ("Failed to set _ENCODE_FILE_NEW environment variable");
-+    }
++  /* Use Bash's bind_variable with export flag */
++  v = bind_variable("_ENCODE_FILE_NEW", value, 0);
++  if (v)
++    VSETATTR(v, att_exported);
 +}
 +
 +/* What to do when _ENCODE_FILE_EXISTING changes. */
@@ -87,17 +86,16 @@ index 4e6f93b..77193b7 100644
 +  v = find_variable (name);
 +  if (v == 0 || value_cell (v) == 0)
 +    {
-+      /* Unset the environment variable to use system default */
-+      unsetenv("_ENCODE_FILE_EXISTING");
++      /* Unbind the variable using Bash's internal function */
++      unbind_variable("_ENCODE_FILE_EXISTING");
 +      return;
 +    }
 +
 +  value = value_cell (v);
-+  /* Set the environment variable for child processes and file operations */
-+  if (setenv("_ENCODE_FILE_EXISTING", value, 1) != 0)
-+    {
-+      internal_warning ("Failed to set _ENCODE_FILE_EXISTING environment variable");
-+    }
++  /* Use Bash's bind_variable with export flag */
++  v = bind_variable("_ENCODE_FILE_EXISTING", value, 0);
++  if (v)
++    VSETATTR(v, att_exported);
 +}
 +#endif
 +
