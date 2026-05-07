@@ -1,0 +1,95 @@
+diff --git a/tests/encodefilevars.tests b/tests/encodefilevars.tests
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/tests/encodefilevars.tests
+@@ -0,0 +1,89 @@
++# Test _ENCODE_FILE_NEW and _ENCODE_FILE_EXISTING environment variable handling
++# These tests verify that bash properly manages z/OS file encoding variables
++
++echo "Testing _ENCODE_FILE_NEW and _ENCODE_FILE_EXISTING variable handling"
++
++# Test 1: Setting _ENCODE_FILE_NEW
++echo "Test 1: Setting _ENCODE_FILE_NEW to UTF-8"
++export _ENCODE_FILE_NEW=UTF-8
++echo "_ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++printenv _ENCODE_FILE_NEW
++
++# Test 2: Setting _ENCODE_FILE_EXISTING
++echo "Test 2: Setting _ENCODE_FILE_EXISTING to ISO8859-1"
++export _ENCODE_FILE_EXISTING=ISO8859-1
++echo "_ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"
++printenv _ENCODE_FILE_EXISTING
++
++# Test 3: Changing _ENCODE_FILE_NEW value
++echo "Test 3: Changing _ENCODE_FILE_NEW to IBM-1047"
++export _ENCODE_FILE_NEW=IBM-1047
++echo "_ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++printenv _ENCODE_FILE_NEW
++
++# Test 4: Changing _ENCODE_FILE_EXISTING value
++echo "Test 4: Changing _ENCODE_FILE_EXISTING to UTF-8"
++export _ENCODE_FILE_EXISTING=UTF-8
++echo "_ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"
++printenv _ENCODE_FILE_EXISTING
++
++# Test 5: Unsetting _ENCODE_FILE_NEW
++echo "Test 5: Unsetting _ENCODE_FILE_NEW"
++unset _ENCODE_FILE_NEW
++echo "_ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++printenv _ENCODE_FILE_NEW || echo "_ENCODE_FILE_NEW is not set in environment"
++
++# Test 6: Unsetting _ENCODE_FILE_EXISTING
++echo "Test 6: Unsetting _ENCODE_FILE_EXISTING"
++unset _ENCODE_FILE_EXISTING
++echo "_ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"
++printenv _ENCODE_FILE_EXISTING || echo "_ENCODE_FILE_EXISTING is not set in environment"
++
++# Test 7: Setting both variables together
++echo "Test 7: Setting both variables together"
++export _ENCODE_FILE_NEW=UTF-8 _ENCODE_FILE_EXISTING=ISO8859-1
++echo "_ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++echo "_ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"
++printenv _ENCODE_FILE_NEW
++printenv _ENCODE_FILE_EXISTING
++
++# Test 8: Verify variables are exported to subshell
++echo "Test 8: Verify variables are exported to subshell"
++export _ENCODE_FILE_NEW=UTF-8
++export _ENCODE_FILE_EXISTING=IBM-1047
++${THIS_SH} -c 'echo "Subshell _ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"; echo "Subshell _ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"'
++
++# Test 9: Setting empty value
++echo "Test 9: Setting empty value for _ENCODE_FILE_NEW"
++export _ENCODE_FILE_NEW=
++echo "_ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++printenv _ENCODE_FILE_NEW || echo "_ENCODE_FILE_NEW is not set in environment"
++
++# Test 10: Setting empty value for _ENCODE_FILE_EXISTING
++echo "Test 10: Setting empty value for _ENCODE_FILE_EXISTING"
++export _ENCODE_FILE_EXISTING=
++echo "_ENCODE_FILE_EXISTING=${_ENCODE_FILE_EXISTING}"
++printenv _ENCODE_FILE_EXISTING || echo "_ENCODE_FILE_EXISTING is not set in environment"
++
++# Test 11: Multiple set/unset cycles
++echo "Test 11: Multiple set/unset cycles"
++export _ENCODE_FILE_NEW=UTF-8
++echo "Set 1: _ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++unset _ENCODE_FILE_NEW
++echo "Unset 1: _ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++export _ENCODE_FILE_NEW=ISO8859-1
++echo "Set 2: _ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++unset _ENCODE_FILE_NEW
++echo "Unset 2: _ENCODE_FILE_NEW=${_ENCODE_FILE_NEW}"
++
++# Test 12: Verify variable attributes
++echo "Test 12: Verify variable attributes"
++export _ENCODE_FILE_NEW=UTF-8
++export _ENCODE_FILE_EXISTING=IBM-1047
++declare -p _ENCODE_FILE_NEW 2>/dev/null || echo "_ENCODE_FILE_NEW variable info not available"
++declare -p _ENCODE_FILE_EXISTING 2>/dev/null || echo "_ENCODE_FILE_EXISTING variable info not available"
++
++# Cleanup
++unset _ENCODE_FILE_NEW
++unset _ENCODE_FILE_EXISTING
++echo "Tests completed"
