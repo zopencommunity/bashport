@@ -1,3 +1,5 @@
+[![CodeQL](https://github.com/zopencommunity/bashport/actions/workflows/codeql.yml/badge.svg)](https://github.com/zopencommunity/bashport/actions/workflows/codeql.yml)
+
 [![Automatic version updates](https://github.com/ZOSOpenTools/bashport/actions/workflows/bump.yml/badge.svg)](https://github.com/ZOSOpenTools/bashport/actions/workflows/bump.yml)
 
 ## GNU Bash
