@@ -1,0 +1,48 @@
+diff --git a/tests/encodefilevars.right b/tests/encodefilevars.right
+new file mode 100644
+index 0000000..0c442f0
+--- /dev/null
++++ b/tests/encodefilevars.right
+@@ -0,0 +1,42 @@
++Testing _ENCODE_FILE_NEW and _ENCODE_FILE_EXISTING variable handling
++Test 1: Setting _ENCODE_FILE_NEW to UTF-8
++_ENCODE_FILE_NEW=UTF-8
++UTF-8
++Test 2: Setting _ENCODE_FILE_EXISTING to ISO8859-1
++_ENCODE_FILE_EXISTING=ISO8859-1
++ISO8859-1
++Test 3: Changing _ENCODE_FILE_NEW to IBM-1047
++_ENCODE_FILE_NEW=IBM-1047
++IBM-1047
++Test 4: Changing _ENCODE_FILE_EXISTING to UTF-8
++_ENCODE_FILE_EXISTING=UTF-8
++UTF-8
++Test 5: Unsetting _ENCODE_FILE_NEW
++_ENCODE_FILE_NEW=
++_ENCODE_FILE_NEW is not set in environment
++Test 6: Unsetting _ENCODE_FILE_EXISTING
++_ENCODE_FILE_EXISTING=
++_ENCODE_FILE_EXISTING is not set in environment
++Test 7: Setting both variables together
++_ENCODE_FILE_NEW=UTF-8
++_ENCODE_FILE_EXISTING=ISO8859-1
++UTF-8
++ISO8859-1
++Test 8: Verify variables are exported to subshell
++Subshell _ENCODE_FILE_NEW=UTF-8
++Subshell _ENCODE_FILE_EXISTING=IBM-1047
++Test 9: Setting empty value for _ENCODE_FILE_NEW
++_ENCODE_FILE_NEW=
++_ENCODE_FILE_NEW is not set in environment
++Test 10: Setting empty value for _ENCODE_FILE_EXISTING
++_ENCODE_FILE_EXISTING=
++_ENCODE_FILE_EXISTING is not set in environment
++Test 11: Multiple set/unset cycles
++Set 1: _ENCODE_FILE_NEW=UTF-8
++Unset 1: _ENCODE_FILE_NEW=
++Set 2: _ENCODE_FILE_NEW=ISO8859-1
++Unset 2: _ENCODE_FILE_NEW=
++Test 12: Verify variable attributes
++declare -x _ENCODE_FILE_NEW="UTF-8"
++declare -x _ENCODE_FILE_EXISTING="IBM-1047"
++Tests completed
