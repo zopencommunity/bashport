@@ -1,7 +1,7 @@
 # bump: bash-version /BASH_VERSION="(.*)"/ https://ftp.gnu.org/gnu/bash/|re:/href="bash-([\d.]+).tar.gz"/$1/|semver:*
 BASH_VERSION="5.3"
 # bump: bash-patch-level /BASH_PATCH_LEVEL="(.*)"/ https://ftp.gnu.org/gnu/bash/bash-5.3-patches/|re:/bash53-(\d+)"/|semver:*
-BASH_PATCH_LEVEL="015"
+BASH_PATCH_LEVEL="020"
 export ZOPEN_BUILD_LINE="STABLE" # default build level is stable
 export ZOPEN_STABLE_URL="https://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz"
 export ZOPEN_CATEGORIES="shell"
