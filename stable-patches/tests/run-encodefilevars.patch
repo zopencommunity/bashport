@@ -1,0 +1,8 @@
+diff --git a/tests/run-encodefilevars b/tests/run-encodefilevars
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/tests/run-encodefilevars
+@@ -0,0 +1,2 @@
++${THIS_SH} ./encodefilevars.tests > ${BASH_TSTOUT} 2>&1
++diff ${BASH_TSTOUT} encodefilevars.right | tee encodefilevars.output && rm -f ${BASH_TSTOUT}

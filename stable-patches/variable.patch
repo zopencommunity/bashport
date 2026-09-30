@@ -1,7 +1,7 @@
-diff --git i/variables.c w/variables.c
-index 4e6f93b..a37e258 100644
---- i/variables.c
-+++ w/variables.c
+diff --git a/variables.c b/variables.c
+index 4e6f93b..5bf5db5 100644
+--- a/variables.c
++++ b/variables.c
 @@ -36,6 +36,10 @@
  #  include <unistd.h>
  #endif
@@ -13,17 +13,19 @@ index 4e6f93b..a37e258 100644
  #include <stdio.h>
  #include "chartypes.h"
  #if defined (HAVE_PWD_H)
-@@ -5757,6 +5761,9 @@ struct name_and_function {
+@@ -5757,6 +5761,11 @@ struct name_and_function {
  };
  
  static struct name_and_function special_vars[] = {
 +#if defined (__MVS__)
 +  { "_BPXK_AUTOCVT", sv_bpxk_autocvt },
++  { "_ENCODE_FILE_NEW", sv_encode_file_new },
++  { "_ENCODE_FILE_EXISTING", sv_encode_file_existing },
 +#endif
    { "BASH_COMPAT", sv_shcompat },
    { "BASH_XTRACEFD", sv_xtracefd },
  
-@@ -5978,6 +5985,32 @@ sv_globsort (const char *name)
+@@ -5978,6 +5987,76 @@ sv_globsort (const char *name)
    setup_globsort (name);
  }
  
@@ -51,21 +53,67 @@ index 4e6f93b..a37e258 100644
 +  else if (strcmp(value, "OFF") == 0)
 +    __ae_autoconvert_state(_CVTSTATE_OFF);
 +}
++
++/* What to do when _ENCODE_FILE_NEW changes. */
++void
++sv_encode_file_new (const char *name)
++{
++  SHELL_VAR *v;
++  char *value;
++
++  v = find_variable (name);
++  if (v == 0 || value_cell (v) == 0)
++    {
++      /* Unbind the variable using Bash's internal function */
++      unbind_variable("_ENCODE_FILE_NEW");
++      return;
++    }
++
++  value = value_cell (v);
++  /* Use Bash's bind_variable with export flag */
++  v = bind_variable("_ENCODE_FILE_NEW", value, 0);
++  if (v)
++    VSETATTR(v, att_exported);
++}
++
++/* What to do when _ENCODE_FILE_EXISTING changes. */
++void
++sv_encode_file_existing (const char *name)
++{
++  SHELL_VAR *v;
++  char *value;
++
++  v = find_variable (name);
++  if (v == 0 || value_cell (v) == 0)
++    {
++      /* Unbind the variable using Bash's internal function */
++      unbind_variable("_ENCODE_FILE_EXISTING");
++      return;
++    }
++
++  value = value_cell (v);
++  /* Use Bash's bind_variable with export flag */
++  v = bind_variable("_ENCODE_FILE_EXISTING", value, 0);
++  if (v)
++    VSETATTR(v, att_exported);
++}
 +#endif
 +
  #if defined (READLINE)
  void
  sv_comp_wordbreaks (const char *name)
-diff --git i/variables.h w/variables.h
-index e939e59..719d5ac 100644
---- i/variables.h
-+++ w/variables.h
-@@ -454,6 +454,10 @@ extern void sv_xtracefd (const char *);
+diff --git a/variables.h b/variables.h
+index e939e59..304ed3f 100644
+--- a/variables.h
++++ b/variables.h
+@@ -454,6 +454,12 @@ extern void sv_xtracefd (const char *);
  extern void sv_shcompat (const char *);
  extern void sv_globsort (const char *);
  
 +#if defined (__MVS__)
 +extern void sv_bpxk_autocvt (const char *);
++extern void sv_encode_file_new (const char *);
++extern void sv_encode_file_existing (const char *);
 +#endif
 +
  #if defined (READLINE)
